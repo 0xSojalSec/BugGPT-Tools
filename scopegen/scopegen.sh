@@ -1,5 +1,5 @@
-#!/usr/bin/zsh
-#!/usr/bin/sh
+#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 while getopts ":t:i:o:" opt; do
   case ${opt} in
