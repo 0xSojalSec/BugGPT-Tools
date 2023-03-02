@@ -1,5 +1,6 @@
 
 Generates **`.scope`** compatible format for TomNomNom's [Inscope](https://github.com/tomnomnom/hacks/tree/master/inscope)
+
 Install: `go install -v github.com/tomnomnom/hacks/inscope@master`
 
 ### **`Installation`**
