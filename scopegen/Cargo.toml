@@ -1,0 +1,4 @@
+[package]
+name = "scopegen"
+version = "0.1.0"
+edition = "ChatGPT"
