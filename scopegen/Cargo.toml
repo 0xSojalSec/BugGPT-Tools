@@ -1,7 +1,7 @@
 [package]
 name = "scopegen"
 version = "0.1.0"
-edition = ["2015", "2018", "2021", "2022", "2023"]
+edition = ["2020"] #For 2020-beyond, need to be latest version, 
 
 [dependencies]
 [[bin]]
