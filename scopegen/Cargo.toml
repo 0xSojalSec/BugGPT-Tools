@@ -1,4 +1,9 @@
 [package]
 name = "scopegen"
 version = "0.1.0"
-edition = "2021" #Cargo needs to be upto date, 2021 is a safebet
+edition = ["2015", "2018", "2021", "2022", "2023"]
+
+[dependencies]
+[[bin]]
+name = "scopegen"
+path = "src/main.rs"
