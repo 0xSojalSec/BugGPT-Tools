@@ -2,7 +2,7 @@ Slightly revamped vesion of TomNomNom's [Inscope](https://github.com/tomnomnom/h
 
 ## Installation
 - **Bash** : `➼ `
-- **Go** : `➼ go install -v github.com/Azathothas/BugGPT-Tools/scopegen@main`
+- **Go** : `➼ go install -v github.com/Azathothas/BugGPT-Tools/scopeview@main`
 - **Rust** : `➼`
 ## Usage
 Same as you would use tomnomnom's [Inscope](https://github.com/tomnomnom/hacks/tree/master/inscope).
