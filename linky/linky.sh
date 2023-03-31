@@ -32,9 +32,11 @@ if [[ $# -gt 0 && ( "$*" == *"up"* || "$*" == *"-up"* || "$*" == *"update"* || "
   curl -s -H "Cache-Control: no-cache" https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/linky.sh -o "$REMOTE_FILE"
   if ! diff --brief /usr/local/bin/linky "$REMOTE_FILE" >/dev/null 2>&1; then
     echo "➼ Update Found! Updating .." 
-    dos2unix $REMOTE_FILE && sudo mv "$REMOTE_FILE" /usr/local/bin/linky
+    dos2unix $REMOTE_FILE 
+    sudo mv "$REMOTE_FILE" /usr/local/bin/linky
     sudo chmod +xwr /usr/local/bin/linky
     rm -f "$REMOTE_FILE" 2>/dev/null
+    echo "➼ Updated to @latest" 
   else
     echo "➼ Already UptoDate"
     rm -f "$REMOTE_FILE" 2>/dev/null
