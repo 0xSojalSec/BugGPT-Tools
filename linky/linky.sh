@@ -13,7 +13,8 @@ if [[ "$*" == *"-init"* ]] || [[ "$*" == *"--init"* ]] || [[ "$*" == *"init"* ]]
   echo "➼ Initializing linky..."
   echo "➼ Please exit (ctrl + c) if you already did this" && sleep 10s
   echo "➼ Setting up...$(rm -rf /tmp/example.com /tmp/example2.com)"
-  linky -u https://example.com -o /tmp/example.com -gh ghp_xyz ; linky -u https://example.com -o /tmp/example2.com -gh ghp_xyz)
+  echo "➼ Exit (ctrl + c) if you start seeing output from wayback, gau etc.."
+  linky -u https://example.com -o /tmp/example.com -gh ghp_xyz ; linky -u https://example.com -o /tmp/example2.com -gh ghp_xyz
   echo "➼ Cleaning up...$(rm -rf /tmp/example.com /tmp/example2.com)"
 fi
 #Help / Usage
