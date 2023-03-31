@@ -31,7 +31,6 @@ fi
 #  sudo chmod +xwr /usr/local/bin/linky
 #  exit 0
 #fi
-echo "test 3"
 # Update
 if [[ $# -gt 0 && ( "$*" == *"-up"* || "$*" == *"--update"* ) ]]; then
   echo "➼ Checking For Updates"
@@ -107,7 +106,7 @@ do
     shift # past value
     ;;
     *)    # unknown option
-    echo "Error: Invalid option '$key'"
+    echo "Error: Invalid option '$key' , try --help for more information"
     exit 1
     ;;
   esac
