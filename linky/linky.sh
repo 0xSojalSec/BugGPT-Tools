@@ -32,12 +32,12 @@ fi
 #  exit 0
 #fi
 # Update
-if [[ "$*" == *"-up"* ]] || [[ "$*" == *"--update"* ]]; then
+if [[ $# -gt 0 && ( "$*" == *"-up"* || "$*" == *"--update"* ) ]]; then
   echo "➼ Checking For Updates"
   REMOTE_FILE=$(mktemp)
   curl -s https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/linky.sh -o "$REMOTE_FILE"
   if ! cmp -s /usr/local/bin/linky "$REMOTE_FILE"; then
-    echo "➼ Update Found! Updating .."➼ 
+    echo "➼ Update Found! Updating .." 
     sudo mv "$REMOTE_FILE" /usr/local/bin/linky
     sudo chmod +xwr /usr/local/bin/linky
   else
