@@ -1,13 +1,19 @@
-
+### About:
 Generates **`.scope`** compatible format for TomNomNom's [Inscope](https://github.com/tomnomnom/hacks/tree/master/inscope)
 
-Install: `go install -v github.com/tomnomnom/hacks/inscope@master`
-
-### **`Installation`**
- - **Bash**: `sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/scopegen/scopegen.sh -O /usr/local/bin/scopegen.sh && sudo chmod +xwr /usr/local/bin/scopegen.sh`  
- 
- - **Go**: `go install -v github.com/Azathothas/BugGPT-Tools/scopegen@main`  
- - **Rust**: `wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/scopegen/scopegen.rs && rustc scopegen.rs && sudo mv scopegen $HOME/.cargo/bin`
+### **Installation**
+ - **Bash**: 
+ ```bash
+ sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/scopegen/scopegen.sh -O /usr/local/bin/scopegen.sh && sudo chmod +xwr /usr/local/bin/scopegen.sh
+ ```
+ - **Go**: 
+ ```bash
+ go install -v github.com/Azathothas/BugGPT-Tools/scopegen@main
+ ```
+ - **Rust**: 
+ ```bash
+ wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/scopegen/scopegen.rs && rustc scopegen.rs && sudo mv scopegen $HOME/.cargo/bin
+ ```
  ### Usage: `scopegen -h` will display help
  **Examples**: 
  `cat inscope-domains.txt`
