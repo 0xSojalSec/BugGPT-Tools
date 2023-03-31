@@ -8,16 +8,22 @@ cat << "EOF"
 ╚═╩╩╩═╩╩╬╗║
 ────────╚═╝
 EOF
+#Initialization, Only on a fresh install
+if [[ "$*" == *"-init"* ]] || [[ "$*" == *"--init"* ]] || [[ "$*" == *"init"* ]] ; then
+  echo "➼ Initializing linky...$(linky -u https://example.com -o /tmp/example.com -gh ghp_xyz ; linky -u https://example.com -o /tmp/example2.com -gh ghp_xyz)"
+  echo "➼ Cleaning up...$(rm -rf /tmp/example.com /tmp/example2.com)"
+fi
 #Help / Usage
 if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]] ; then
   echo "➼ Usage: linky -u <url> -o /path/to/outputdir -gh <github_token> -h <optional Headers>"
   echo ""
   echo "Extended Help"
-  echo "-u,  --url            Specify the URL to scrape (Required)"
-  echo "-o,  --output_dir     Specify the directory to save the output files (Required)"
-  echo "-gh, --github_token   Specify a GitHub personal access token (Required if you want to fetch from github)"
-  echo "-h,  --headers        Specify additional headers or cookies to use in the HTTP request (optional)"
-  echo "-up, --update         Update linky"
+  echo "-u,    --url            Specify the URL to scrape (Required)"
+  echo "-o,    --output_dir     Specify the directory to save the output files (Required)"
+  echo "-gh,   --github_token   Specify a GitHub personal access token (Required if you want to fetch from github)"
+  echo "-h,    --headers        Specify additional headers or cookies to use in the HTTP request (optional)"
+  echo "-init, --init           Initialize ➼ linky by dry-running it against example.com (Only run on a fresh Install)"
+  echo "-up,   --update         Update linky"
   echo ""
   echo "Example Usage: (#Manually Specify -gh | --github_token ghp_xyz , incase ~/.config/.github_tokens doesn't exsist)"
   echo 'linky --url https://example.com --output_dir /path/to/outputdir --github_token ghp_xyz --headers "Authorization: Bearer token; Cookie: cookie_value"'
