@@ -12,7 +12,7 @@ EOF
 if [[ "$*" == *"-init"* ]] || [[ "$*" == *"--init"* ]] || [[ "$*" == *"init"* ]] ; then
   echo "➼ Initializing linky..."
   echo "➼ Please exit (ctrl + c) if you already did this" 
-  echo "➼ Exit (ctrl + c) if you start seeing output from wayback (➼ Running Waybackurls on:)" && sleep 10s
+  echo "➼ Exit (ctrl + c) if you start seeing output from wayback (➼ Running Waybackurls on: https://example5.com)" && sleep 10s
   echo "➼ Setting up...$(rm -rf /tmp/example.com /tmp/example2.com /tmp/example3.com 2>/dev/null)"
   linky -u https://example5.com -o /tmp/example.com -gh ghp_xyz 
   linky -u https://example5.com -o /tmp/example2.com -gh ghp_xyz
