@@ -1,6 +1,18 @@
+Revamped Version of [**mux0x/cold.sh**](https://github.com/mux0x/cold.sh) ; A Fancy Wrapper around [**gau**](https://github.com/lc/gau), [**github-endpoints**](https://github.com/gwen001/github-search/blob/master/github-endpoints.py), [**gospider**](https://github.com/jaeles-project/gospider), [**hakrawler**](https://github.com/hakluke/hakrawler), [**JSA**](https://github.com/w9w/JSA), [**katana**](https://github.com/projectdiscovery/katana), [**subJS**](https://github.com/lc/subjs), [**waybackurls**](https://github.com/tomnomnom/waybackurls) & [**xnLinkFinder**](https://github.com/xnl-h4ck3r/xnLinkFinder) to find as much Links, Endpoints & Params as possible on a single `$URL`.
 
+### **Installation**:
+ - **Bash**: 
+```bash
+sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/linky.sh -O /usr/local/bin/linky && sudo chmod +xwr /usr/local/bin/linky && linky --help
+``` 
+### Initialization
+```bash
+#Will auto install dependencies and Initialize upon first & second run. Just Copy Paste, no changes required
+linky -u https://example.com -o /tmp/example.com -gh ghp_xyz ; linky -u https://example.com -o /tmp/example.com -gh ghp_xyz
+```
 
-
+### Usage:
+`linky --help`
 ```bash
 ──╔╗──╔╗
 ╔╗╠╬═╦╣╠╦╦╗
@@ -16,6 +28,6 @@ Extended Help
 -h,  --headers        Specify additional headers or cookies to use in the HTTP request (optional)
 -up, --update         Update linky
 
-Example Usage:
-linky --url https://example.com --output_dir /path/to/outputdir --github_token ghp_xyz --headers "Authorization: Bearer token; Cookie: cookie_value"
+Example Usage: (#Manually Specify -gh | --github_token ghp_xyz , incase ~/.config/.github_tokens doesn't exsist)
+linky --url https://example.com --output_dir /path/to/outputdir --github_token $(head -n 1 ~/.config/.github_tokens) --headers "Authorization: Bearer token; Cookie: cookie_value"
 ```
