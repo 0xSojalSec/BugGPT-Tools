@@ -25,7 +25,7 @@ if [[ "$*" == *"-init"* ]] || [[ "$*" == *"--init"* ]] || [[ "$*" == *"init"* ]]
   fi
    echo "➼ Initialization Finished "
    rm -rf /tmp/example.com /tmp/example2.com /tmp/example3.com /tmp/linky.log 2>/dev/null
-   exit 0
+   exit 1
 fi
 #Help / Usage
 if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]] ; then
