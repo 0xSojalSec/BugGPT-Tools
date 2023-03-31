@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 #A bit of Styling
 cat << "EOF"
@@ -13,11 +14,11 @@ if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]]
   echo "Usage: linky -u <url> -o /path/to/outputdir -gh <github_token> -h <optional Headers>"
   echo ""
   echo "Extended Help"
-  echo "-u, --url            Specify the URL to scrape (Required)"
-  echo "-o, --output_dir     Specify the directory to save the output files (Required)"
-  echo "-gh, --github_token  Specify a GitHub personal access token (Required if you want to fetch from github)"
-  echo "-h, --headers        Specify additional headers or cookies to use in the HTTP request (optional)"
-  echo "-up, --update        Update linky"
+  echo "-u,  --url            Specify the URL to scrape (Required)"
+  echo "-o,  --output_dir     Specify the directory to save the output files (Required)"
+  echo "-gh, --github_token   Specify a GitHub personal access token (Required if you want to fetch from github)"
+  echo "-h,  --headers        Specify additional headers or cookies to use in the HTTP request (optional)"
+  echo "-up, --update         Update linky"
   echo ""
   echo "Example Usage:"
   echo 'linky --url https://example.com --output_dir /path/to/outputdir --github_token ghp_xyz --headers "Authorization: Bearer token; Cookie: cookie_value"'
@@ -26,7 +27,7 @@ if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]]
 fi
 #Update
 if [[ "$*" == *"-up"* ]] || [[ "$*" == *"--update"* ]]; then
-  sudo rm -rf /usr/local/bin/linky && sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/linky.sh?token=GHSAT0AAAAAAB3Y3DGFUWLGFRAWDKBKYVDMZBGZECQ -O /usr/local/bin/linky
+  sudo rm -rf /usr/local/bin/linky && sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/linky.sh -O /usr/local/bin/linky
   sudo chmod +xwr /usr/local/bin/linky
   exit 0
 fi
@@ -79,6 +80,8 @@ do
     -h|--headers)
     if [ -z "$2" ]; then
       echo "Error: Header / Cookie Values missing for option '-h | --headers'"
+      echo "To display help, use 'help | -help | --help'"
+
       exit 1
     fi
     optionalHeaders="$2"
@@ -114,17 +117,18 @@ if ! command -v chromium >/dev/null 2>&1; then
     sudo apt-get update && sudo apt-get install chromium chromium-chromedriver chromium-common chromium-driver -y
 fi
 #Health Check for binaries
-binaries=("waybackurls" "gau" "katana" "hakrawler" "gospider" "anew")
+binaries=("anew" "gau" "gospider" "hakrawler" "katana" "subjs" "waybackurls")
 for binary in "${binaries[@]}"; do
     if ! command -v "$binary" &> /dev/null; then
         echo "➼ Error: $binary not found"
         echo "➼ Attempting to Install missing tools"
         go install -v github.com/tomnomnom/anew@latest
         go install -v github.com/lc/gau/v2/cmd/gau@latest
-        go install -v github.com/projectdiscovery/katana/cmd/katana@latest
-        go install -v github.com/hakluke/hakrawler@latest
         go install -v github.com/jaeles-project/gospider@latest
+        go install -v github.com/hakluke/hakrawler@latest
+        go install -v github.com/projectdiscovery/katana/cmd/katana@latest
         go install -v github.com/lc/subjs@latest
+        go install -v github.com/tomnomnom/waybackurls@latest
         exit 1
     fi
 done
@@ -141,8 +145,8 @@ for path in "${paths[@]}"; do
         wget https://raw.githubusercontent.com/gwen001/github-search/master/github-endpoints.py -O $HOME/Tools/github-endpoints.py
         #w9w/JSA
         git clone https://github.com/w9w/JSA.git && cd JSA && pip3 install -r requirements.txt
-        wget https://raw.githubusercontent.com/mux0x/needs/main/JSA_automation.sh -O ~/Tools/JSA/automation.sh
-        chmod +x ~/Tools/JSA/automation.sh && chmod +x ~/Tools/JSA/automation/./404_js_wayback.sh
+        wget https://raw.githubusercontent.com/mux0x/needs/main/JSA_automation.sh -O $HOME/Tools/JSA/automation.sh
+        chmod +x $HOME/Tools/JSA/automation.sh && chmod +x $HOME/Tools/JSA/automation/./404_js_wayback.sh
         exit 1
     fi
 done
@@ -184,14 +188,14 @@ fi
 clear 
 echo "➼ Running xnLinkFinder on: $url" && sleep 3s
 if [ -n "$optionalHeaders" ]; then 
-    python3 ~/Tools/xnLinkFinder/xnLinkFinder.py  -i $url -H "$optionalHeaders" -sp $url -d 4 -sf .*$domain -v -o $outputDir/urls.txt -op $outputDir/parameters.txt
+    python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py  -i $url -H "$optionalHeaders" -sp $url -d 4 -sf .*$domain -v -o $outputDir/urls.txt -op $outputDir/parameters.txt
 else
-    python3 ~/Tools/xnLinkFinder/xnLinkFinder.py  -i $url -sp $url -d 4 -sf .*$domain -v -o $outputDir/urls.txt -op $outputDir/parameters.txt
+    python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py  -i $url -sp $url -d 4 -sf .*$domain -v -o $outputDir/urls.txt -op $outputDir/parameters.txt
 fi
 clear 
 echo "➼ Running github-endpoints on: $url" && sleep 3s
 rm -rf /tmp/$domain-gh.txt 
-python3 ~/Tools/github-endpoints.py -t $githubToken -d $domain | anew /tmp/$domain-gh.txt
+python3 $HOME/Tools/github-endpoints.py -t $githubToken -d $domain | anew /tmp/$domain-gh.txt
 cat /tmp/$domain-gh.txt | anew $outputDir/urls.txt
 cat $outputDir/urls.txt | grep -aEi "\.js([?#].*)?$" | anew $outputDir/js.txt
 echo $url | $HOME/Tools/JSA/./automation.sh $outputDir $githubToken $outputDir/urls.txt 1> $outputDir/JSA.log 2>&1
