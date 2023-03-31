@@ -3,13 +3,13 @@ Revamped Version of [**mux0x/cold.sh**](https://github.com/mux0x/cold.sh) ; A Fa
 ### **Installation**:
  - **Bash**: 
 ```bash
-sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/linky.sh -O /usr/local/bin/linky && sudo chmod +xwr /usr/local/bin/linky
+sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/linky.sh -O /usr/local/bin/linky && sudo chmod +xwr /usr/local/bin/linky && linky --help
 ``` 
 
 
 ### Usage: 
 ```bash
-#Will auto install dependency and Initialize upon first run. manually supply -gh if ~/.config/.github_tokens doesn't exist
+#Will auto install dependencies and Initialize upon first run. manually supply -gh if ~/.config/.github_tokens doesn't exist
 linky -u https://example.com -o /tmp/example.com -gh $(head -n 1 ~/.config/.github_tokens)
 ```
 `linky --help`
