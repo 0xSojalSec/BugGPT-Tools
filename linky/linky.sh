@@ -26,7 +26,7 @@ if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]]
 fi
 #Update
 if [[ "$*" == *"-up"* ]] || [[ "$*" == *"--update"* ]]; then
-  sudo rm -rf /usr/local/bin/linky && sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/linky.sh -O /usr/local/bin/linky
+  sudo rm -rf /usr/local/bin/linky && sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/linky.sh?token=GHSAT0AAAAAAB3Y3DGFUWLGFRAWDKBKYVDMZBGZECQ -O /usr/local/bin/linky
   sudo chmod +xwr /usr/local/bin/linky
   exit 0
 fi
