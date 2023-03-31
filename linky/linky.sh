@@ -8,18 +8,18 @@ cat << "EOF"
 ╚═╩╩╩═╩╩╬╗║
 ────────╚═╝
 EOF
-#Initialization, Only on a fresh install
-if [[ "$*" == *"-init"* ]] || [[ "$*" == *"--init"* ]] || [[ "$*" == *"init"* ]] ; then
-  echo "➼ Initializing linky..."
-  echo "➼ Please exit (ctrl + c) if you already did this" 
-  echo "➼ Exit (ctrl + c) if you start seeing output from wayback (➼ Running Waybackurls on: https://example5.com)" && sleep 10s
-  echo "➼ Setting up...$(rm -rf /tmp/example.com /tmp/example2.com /tmp/example3.com 2>/dev/null)"
-  linky -u https://example5.com -o /tmp/example.com -gh ghp_xyz 
-  linky -u https://example5.com -o /tmp/example2.com -gh ghp_xyz
-  linky -u https://example5.com -o /tmp/example3.com -gh ghp_xyz 
-  rm -rf /tmp/example.com /tmp/example2.com /tmp/example3.com 2>/dev/null
-  exit 0
-fi
+##Initialization, Only on a fresh install
+#if [[ "$*" == *"-init"* ]] || [[ "$*" == *"--init"* ]] || [[ "$*" == *"init"* ]] ; then
+#  echo "➼ Initializing linky..."
+#  echo "➼ Please exit (ctrl + c) if you already did this" 
+#  echo "➼ Exit (ctrl + c) if you start seeing output from wayback (➼ Running Waybackurls on: https://example5.com)" && sleep 10s
+#  echo "➼ Setting up...$(rm -rf /tmp/example.com /tmp/example2.com /tmp/example3.com 2>/dev/null)"
+#  linky -u https://example5.com -o /tmp/example.com -gh ghp_xyz 
+#  linky -u https://example5.com -o /tmp/example2.com -gh ghp_xyz
+#  linky -u https://example5.com -o /tmp/example3.com -gh ghp_xyz 
+#  rm -rf /tmp/example.com /tmp/example2.com /tmp/example3.com 2>/dev/null
+#  exit 0
+#fi
 #Help / Usage
 if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]] ; then
   echo "➼ Usage: linky -u <url> -o /path/to/outputdir -gh <github_token> -h <optional Headers>"
@@ -29,7 +29,7 @@ if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]]
   echo "-o,    --output_dir     Specify the directory to save the output files (Required)"
   echo "-gh,   --github_token   Specify a GitHub personal access token (Required if you want to fetch from github)"
   echo "-h,    --headers        Specify additional headers or cookies to use in the HTTP request (optional)"
-  echo "-init, --init           Initialize ➼ linky by dry-running it against example.com (Only run on a fresh Install)"
+  #echo "-init, --init           Initialize ➼ linky by dry-running it against example.com (Only run on a fresh Install)"
   echo "-up,   --update         Update linky"
   echo ""
   echo "Example Usage: (#Manually Specify -gh | --github_token ghp_xyz , incase ~/.config/.github_tokens doesn't exsist)"
@@ -153,7 +153,6 @@ for binary in "${binaries[@]}"; do
         go install -v github.com/projectdiscovery/katana/cmd/katana@latest
         go install -v github.com/lc/subjs@latest
         go install -v github.com/tomnomnom/waybackurls@latest
-        exit 1
     fi
 done
 #Health Check for Tools
@@ -171,7 +170,6 @@ for path in "${paths[@]}"; do
         git clone https://github.com/w9w/JSA.git && cd JSA && pip3 install -r requirements.txt
         wget https://raw.githubusercontent.com/mux0x/needs/main/JSA_automation.sh -O $HOME/Tools/JSA/automation.sh
         chmod +x $HOME/Tools/JSA/automation.sh && chmod +x $HOME/Tools/JSA/automation/./404_js_wayback.sh
-        exit 1
     fi
 done
 #Start Tool
