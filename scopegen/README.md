@@ -31,4 +31,11 @@ Install: `go install -v github.com/tomnomnom/hacks/inscope@master`
 !.*oos\.example\.com$
 !.*oos\.abc\.example\.org$
  ```
- you can also pass **`stdin`**: **`cat [inscope|outscope]-domains.txt | scopegen [-in | -os]`**
+ you can also pass **`stdin`**: 
+```bash 
+cat [inscope|outscope]-domains.txt | scopegen [-in | -os]
+#or as echo
+echo "example.com" | scopegen [-in | -os]
+```
+
+
