@@ -8,11 +8,25 @@ cat << "EOF"
 ╚═╩╩╩═╩╩╬╗║
 ────────╚═╝
 EOF
+#Help / Usage
+if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]] ; then
+  echo "Usage: linky -u <url> -o /path/to/outputdir -gh <github_token> -h <optional Headers>"
+  echo ""
+  echo "Extended Help"
+  echo "-u, --url            Specify the URL to scrape (Required)"
+  echo "-o, --output_dir     Specify the directory to save the output files (Required)"
+  echo "-gh, --github_token  Specify a GitHub personal access token (Required if you want to fetch from github)"
+  echo "-h, --headers        Specify additional headers or cookies to use in the HTTP request (optional)"
+  echo "-up, --update        Update linky"
+  echo ""
+  echo "Example Usage:"
+  echo 'linky --url https://example.com --output_dir /path/to/outputdir --github_token ghp_xyz --headers "Authorization: Bearer token; Cookie: cookie_value"'
+  echo ""
+  exit 0
+fi
 #Update
 if [[ "$*" == *"-up"* ]] || [[ "$*" == *"--update"* ]]; then
-  # Run your command here
   echo "Running update command..."
-  # Exit the script so it doesn't continue running
   exit 0
 fi
 # Parse command line options
