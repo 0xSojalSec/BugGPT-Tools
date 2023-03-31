@@ -6,7 +6,7 @@ Revamped Version of [**mux0x/cold.sh**](https://github.com/mux0x/cold.sh) ; A Fa
 ```bash
 sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/linky.sh -O /usr/local/bin/linky && sudo chmod +xwr /usr/local/bin/linky && linky --help
 ``` 
-### Initialization
+### Initialization:
 ```bash
 linky -init
 # Essentially dry runs and attempts auto install of dependencies and Initialize upon first & second run:
