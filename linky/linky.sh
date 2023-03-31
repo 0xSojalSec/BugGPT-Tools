@@ -11,7 +11,7 @@ cat << "EOF"
 EOF
 #Help / Usage
 if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]] ; then
-  echo "Usage: linky -u <url> -o /path/to/outputdir -gh <github_token> -h <optional Headers>"
+  echo "➼ Usage: linky -u <url> -o /path/to/outputdir -gh <github_token> -h <optional Headers>"
   echo ""
   echo "Extended Help"
   echo "-u,  --url            Specify the URL to scrape (Required)"
@@ -26,10 +26,25 @@ if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]]
   exit 0
 fi
 #Update
+#if [[ "$*" == *"-up"* ]] || [[ "$*" == *"--update"* ]]; then
+#  sudo rm -rf /usr/local/bin/linky && sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/linky.sh -O /usr/local/bin/linky
+#  sudo chmod +xwr /usr/local/bin/linky
+#  exit 0
+#fi
+# Update
 if [[ "$*" == *"-up"* ]] || [[ "$*" == *"--update"* ]]; then
-  sudo rm -rf /usr/local/bin/linky && sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/linky.sh -O /usr/local/bin/linky
-  sudo chmod +xwr /usr/local/bin/linky
-  exit 0
+  echo "➼ Checking For Updates"
+  REMOTE_FILE=$(mktemp)
+  curl -s https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/linky.sh -o "$REMOTE_FILE"
+  if ! cmp -s /usr/local/bin/linky "$REMOTE_FILE"; then
+    echo "➼ Update Found! Updating .."➼ 
+    sudo mv "$REMOTE_FILE" /usr/local/bin/linky
+    sudo chmod +xwr /usr/local/bin/linky
+  else
+    echo "➼ Already UptoDate"
+    rm "$REMOTE_FILE"
+    exit 0
+  fi
 fi
 # Parse command line options
 while [[ $# -gt 0 ]]
