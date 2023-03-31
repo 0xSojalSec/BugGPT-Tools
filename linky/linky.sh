@@ -225,9 +225,11 @@ for i in "${!files[@]}"; do
     fi
 done
 #Check For Update on Script end
+echo ""
 REMOTE_FILE=$(mktemp)
 curl -s -H "Cache-Control: no-cache" https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/linky.sh -o "$REMOTE_FILE"
 if ! diff --brief /usr/local/bin/linky "$REMOTE_FILE" >/dev/null 2>&1; then
+echo ""
 echo "➼ Update Found! updating .. $(linky -up)" 
   else
   rm -f "$REMOTE_FILE" 2>/dev/null
