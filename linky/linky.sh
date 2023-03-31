@@ -188,8 +188,7 @@ if [ -n "$optionalHeaders" ]; then
     echo $url | hakrawler -insecure -t 20 -h "$optionalHeaders" | anew $outputDir/urls.txt
 else
     echo $url | hakrawler -insecure -t 20 | anew $outputDir/urls.txt
-fi
-clear 
+fi 
 echo "➼ Running GoSpider silently on: $url & Saving Output" && sleep 3s
 if [ -n "$optionalHeaders" ]; then 
     gospider -s $url -a -w -r -c 20 -H "$optionalHeaders" | grep -aEo 'https?://[^ ]+' | sed 's/]$//' | sort -u | anew $outputDir/urls.txt
