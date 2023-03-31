@@ -43,7 +43,7 @@ if [[ $# -gt 0 && ( "$*" == *"-up"* || "$*" == *"--update"* ) ]]; then
     rm "$REMOTE_FILE"
   else
     echo "➼ Already UptoDate"
-    rm "$REMOTE_FILE"
+    rm -f "$REMOTE_FILE" 
     exit 0
   fi
   exit 0
