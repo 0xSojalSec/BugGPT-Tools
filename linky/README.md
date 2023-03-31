@@ -7,8 +7,8 @@ sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/l
 ``` 
 ### Initialization
 ```bash
-#Will auto install dependencies and Initialize upon first & second run. manually supply -gh if ~/.config/.github_tokens doesn't exist
-linky -u https://example.com -o /tmp/example.com -gh $(head -n 1 ~/.config/.github_tokens) ; linky -u https://example.com -o /tmp/example.com -gh $(head -n 1 ~/.config/.github_tokens)
+#Will auto install dependencies and Initialize upon first & second run. Just Copy Paste, no changes required
+linky -u https://example.com -o /tmp/example.com -gh ghp_xyz ; linky -u https://example.com -o /tmp/example.com -gh ghp_xyz
 ```
 
 ### Usage:
@@ -28,6 +28,6 @@ Extended Help
 -h,  --headers        Specify additional headers or cookies to use in the HTTP request (optional)
 -up, --update         Update linky
 
-Example Usage:
-linky --url https://example.com --output_dir /path/to/outputdir --github_token ghp_xyz --headers "Authorization: Bearer token; Cookie: cookie_value"
+Example Usage: (#Manually Specify -gh | --github_token ghp_xyz , incase ~/.config/.github_tokens doesn't exsist)
+linky --url https://example.com --output_dir /path/to/outputdir --github_token $(head -n 1 ~/.config/.github_tokens) --headers "Authorization: Bearer token; Cookie: cookie_value"
 ```
