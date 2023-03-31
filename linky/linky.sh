@@ -41,12 +41,13 @@ if [[ $# -gt 0 && ( "$*" == *"-up"* || "$*" == *"--update"* ) ]]; then
     echo "➼ Update Found! Updating .." 
     sudo mv "$REMOTE_FILE" /usr/local/bin/linky
     sudo chmod +xwr /usr/local/bin/linky
+    rm "$REMOTE_FILE"
   else
     echo "➼ Already UptoDate"
+    rm "$REMOTE_FILE"
+    exit 0
   fi
-  rm "$REMOTE_FILE"
 fi
-
 # Parse command line options
 while [[ $# -gt 0 ]]
 do
