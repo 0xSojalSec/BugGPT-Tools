@@ -16,6 +16,7 @@ if [[ "$*" == *"-init"* ]] || [[ "$*" == *"--init"* ]] || [[ "$*" == *"init"* ]]
   echo "➼ Exit (ctrl + c) if you start seeing output from wayback, gau etc.."
   linky -u https://example.com -o /tmp/example.com -gh ghp_xyz ; linky -u https://example.com -o /tmp/example2.com -gh ghp_xyz
   echo "➼ Cleaning up...$(rm -rf /tmp/example.com /tmp/example2.com)"
+  exit 0
 fi
 #Help / Usage
 if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]] ; then
