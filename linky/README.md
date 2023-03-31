@@ -8,9 +8,10 @@ sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/l
 ``` 
 ### Initialization:
 ```bash
+#Exit (ctrl + c) if you start seeing output from wayback (➼ Running Waybackurls on: https://example5.com)
 linky -init
 # Essentially dry runs and attempts auto install of dependencies and Initialize upon first & second run:
-# linky -u https://example.com -o /tmp/example.com -gh ghp_xyz ; linky -u https://example.com -o /tmp/example.com -gh ghp_xyz
+# linky -u https://example.com -o /tmp/example5.com -gh ghp_xyz ; linky -u https://example5.com -o /tmp/example.com -gh ghp_xyz
 ```
 
 ### Usage:
