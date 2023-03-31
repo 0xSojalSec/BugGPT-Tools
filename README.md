@@ -13,6 +13,6 @@
 **Maintenance**: Not guaranteed. Bugs? Fork & Fix them yourself (Pull requests are appreciated). Or have ChatGPT do it. 
 
 **State** :                                                                                                                                                                                                                                                                                                                           
-           ➼ **`Bash`** : Most Stable & Relaible                                                                                                                                 
-           ➼   **`Go`** : Work In Progess, Stability & Relaibility not Guaranteed                                                                                                
+           ➼ **`Bash`** : Most Stable & Reliable                                                                                                                                 
+           ➼   **`Go`** : Work In Progess, Stability & Reliability not Guaranteed                                                                                                
            ➼ **`Rust`** : Highly Experimental
