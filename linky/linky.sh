@@ -31,7 +31,7 @@ fi
 #  sudo chmod +xwr /usr/local/bin/linky
 #  exit 0
 #fi
-echo "test 2"
+echo "test 3"
 # Update
 if [[ $# -gt 0 && ( "$*" == *"-up"* || "$*" == *"--update"* ) ]]; then
   echo "➼ Checking For Updates"
@@ -47,6 +47,7 @@ if [[ $# -gt 0 && ( "$*" == *"-up"* || "$*" == *"--update"* ) ]]; then
     rm "$REMOTE_FILE"
     exit 0
   fi
+  exit 0
 fi
 # Parse command line options
 while [[ $# -gt 0 ]]
