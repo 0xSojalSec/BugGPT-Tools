@@ -26,7 +26,7 @@ if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]]
   exit 0
 fi
 # Update
-if [[ $# -gt 0 && ( "$*" == *"-up"* || "$*" == *"--update"* ) ]]; then
+if [[ $# -gt 0 && ( "$*" == *"up"* || "$*" == *"-up"* || "$*" == *"update"* || "$*" == *"--update"* ) ]]; then
   echo "➼ Checking For Updates"
   REMOTE_FILE=$(mktemp)
   curl -s -H "Cache-Control: no-cache" https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/linky.sh -o "$REMOTE_FILE"
