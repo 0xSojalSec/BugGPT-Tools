@@ -35,7 +35,7 @@ if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]]
   echo ""
   exit 0
 fi
-# Update. Github caches takes several minutes to reflect globally  
+# Update. Github caches take several minutes to reflect globally  
 if [[ $# -gt 0 && ( "$*" == *"up"* || "$*" == *"-up"* || "$*" == *"update"* || "$*" == *"--update"* ) ]]; then
   echo "➼ Checking For Updates"
   REMOTE_FILE=$(mktemp)
