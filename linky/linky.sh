@@ -1,5 +1,4 @@
-#!/usr/bin/env zsh
-#!/usr/bin/env bash
+#!/usr/bin/bash
 
 #A bit of Styling
 cat << "EOF"
