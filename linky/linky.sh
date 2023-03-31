@@ -33,10 +33,9 @@ if [[ $# -gt 0 && ( "$*" == *"up"* || "$*" == *"-up"* || "$*" == *"update"* || "
   if ! diff --brief /usr/local/bin/linky "$REMOTE_FILE" >/dev/null 2>&1; then
     echo "➼ Update Found! Updating .." 
     dos2unix $REMOTE_FILE 
-    sudo mv "$REMOTE_FILE" /usr/local/bin/linky
+    sudo mv "$REMOTE_FILE" /usr/local/bin/linky && echo "➼ Updated to @latest" 
     sudo chmod +xwr /usr/local/bin/linky
     rm -f "$REMOTE_FILE" 2>/dev/null
-    echo "➼ Updated to @latest" 
   else
     echo "➼ Already UptoDate"
     rm -f "$REMOTE_FILE" 2>/dev/null
@@ -201,9 +200,9 @@ fi
 clear 
 echo "➼ Running xnLinkFinder on: $url" && sleep 3s
 if [ -n "$optionalHeaders" ]; then 
-    python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py  -i $url -H "$optionalHeaders" -sp $url -d 4 -sf .*$domain -v -o $outputDir/urls.txt -op $outputDir/parameters.txt
+    python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py  -i $url -H "$optionalHeaders" -sp $url -d 4 -sf .*$domain -v -insecure -o $outputDir/urls.txt -op $outputDir/parameters.txt
 else
-    python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py  -i $url -sp $url -d 4 -sf .*$domain -v -o $outputDir/urls.txt -op $outputDir/parameters.txt
+    python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py  -i $url -sp $url -d 4 -sf .*$domain -v -insecure -o $outputDir/urls.txt -op $outputDir/parameters.txt
 fi
 clear 
 echo "➼ Running github-endpoints on: $url" && sleep 3s
@@ -226,3 +225,12 @@ for i in "${!files[@]}"; do
         echo "➼ File ${files[i]} not found"
     fi
 done
+#Check For Update on Script end
+REMOTE_FILE=$(mktemp)
+curl -s -H "Cache-Control: no-cache" https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/linky.sh -o "$REMOTE_FILE"
+if ! diff --brief /usr/local/bin/linky "$REMOTE_FILE" >/dev/null 2>&1; then
+echo "➼ Update Found! updating .. $(linky -up)" 
+  else
+  rm -f "$REMOTE_FILE" 2>/dev/null
+    exit 0
+fi
