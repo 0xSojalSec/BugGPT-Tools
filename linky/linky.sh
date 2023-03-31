@@ -11,21 +11,14 @@ EOF
 #Initialization, Only on a fresh install
 if [[ "$*" == *"-init"* ]] || [[ "$*" == *"--init"* ]] || [[ "$*" == *"init"* ]] ; then
   echo "➼ Initializing linky..."
-  echo "➼ Please exit (ctrl + c) if you already did this" && sleep 10s
+  echo "➼ Please exit (ctrl + c) if you already did this" 
+  echo "➼ Exit (ctrl + c) if you start seeing output from wayback (➼ Running Waybackurls on:)" && sleep 10s
   echo "➼ Setting up...$(rm -rf /tmp/example.com /tmp/example2.com /tmp/example3.com 2>/dev/null)"
-  echo "➼ Exit (ctrl + c) if you start seeing output from wayback (➼ Running Waybackurls on:)"
-  linky -u https://example.com -o /tmp/example.com -gh ghp_xyz | tee -a /tmp/linky.log
-  linky -u https://example.com -o /tmp/example2.com -gh ghp_xyz | tee -a /tmp/linky.log
-  linky -u https://example.com -o /tmp/example3.com -gh ghp_xyz | tee -a /tmp/linky.log
-  # Check for "Running Waybackurls on" in the log and exit if found
-  if grep -q "➼ Running Waybackurls on:" /tmp/linky.log; then
-    echo "➼ Initialization Finished "
-    rm -rf /tmp/example.com /tmp/example2.com /tmp/example3.com /tmp/linky.log 2>/dev/null
-    exit 0
-  fi
-   echo "➼ Initialization Finished "
-   rm -rf /tmp/example.com /tmp/example2.com /tmp/example3.com /tmp/linky.log 2>/dev/null
-   exit 1
+  linky -u https://example5.com -o /tmp/example.com -gh ghp_xyz 
+  linky -u https://example5.com -o /tmp/example2.com -gh ghp_xyz
+  linky -u https://example5.com -o /tmp/example3.com -gh ghp_xyz 
+  rm -rf /tmp/example.com /tmp/example2.com /tmp/example3.com 2>/dev/null
+  exit 0
 fi
 #Help / Usage
 if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]] ; then
