@@ -3,7 +3,7 @@ Revamped Version of [**mux0x/cold.sh**](https://github.com/mux0x/cold.sh) ; A Fa
 ### **Installation**:
  - **Bash**: 
 ```bash
-sudo https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/linky.sh -O /usr/local/bin/linky && sudo chmod +xwr /usr/local/bin/linky
+sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/linky.sh -O /usr/local/bin/linky && sudo chmod +xwr /usr/local/bin/linky
 ``` 
 
 
