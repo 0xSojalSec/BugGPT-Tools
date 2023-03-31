@@ -1,9 +1,16 @@
+### About:
 Slightly revamped vesion of TomNomNom's [Inscope](https://github.com/tomnomnom/hacks/tree/master/inscope) that allows custom **`.scope`** to be defined using **`-s`** or **`--scope`** options
 
 ## Installation
-- **Bash** : `➼ sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/scopeview/scopeview.sh -O /usr/local/bin/scopeview.sh && sudo chmod +xwr /usr/local/bin/scopeview.sh `
-- **Go** : `➼ go install -v github.com/Azathothas/BugGPT-Tools/scopeview@main`
-- **Rust** : `➼`
+- **Bash** : 
+```bash
+sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/scopeview/scopeview.sh -O /usr/local/bin/scopeview.sh && sudo chmod +xwr /usr/local/bin/scopeview.sh 
+```
+- **Go** : 
+```bash
+go install -v github.com/Azathothas/BugGPT-Tools/scopeview@main
+```
+- **Rust** : `NO`
 ## Usage
 Same as you would use tomnomnom's [Inscope](https://github.com/tomnomnom/hacks/tree/master/inscope).
 Difference being, able to pass/specify **`.scope`**
