@@ -10,6 +10,8 @@ cat << "EOF"
 EOF
 #Initialization, Only on a fresh install
 if [[ "$*" == *"-init"* ]] || [[ "$*" == *"--init"* ]] || [[ "$*" == *"init"* ]] ; then
+  echo "➼ Please exit (ctrl + c) if you already did this" && sleep 10s
+  echo "➼ Setting up...$(rm -rf /tmp/example.com /tmp/example2.com)"
   echo "➼ Initializing linky...$(linky -u https://example.com -o /tmp/example.com -gh ghp_xyz ; linky -u https://example.com -o /tmp/example2.com -gh ghp_xyz)"
   echo "➼ Cleaning up...$(rm -rf /tmp/example.com /tmp/example2.com)"
 fi
