@@ -19,7 +19,7 @@ if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]]
   echo "-h,  --headers        Specify additional headers or cookies to use in the HTTP request (optional)"
   echo "-up, --update         Update linky"
   echo ""
-  echo "Example Usage:"
+  echo "Example Usage: (#Manually Specify -gh | --github_token ghp_xyz , incase ~/.config/.github_tokens doesn't exsist)"
   echo 'linky --url https://example.com --output_dir /path/to/outputdir --github_token ghp_xyz --headers "Authorization: Bearer token; Cookie: cookie_value"'
   echo ""
   exit 0
