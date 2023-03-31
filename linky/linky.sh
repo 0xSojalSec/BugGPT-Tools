@@ -34,10 +34,10 @@ if [[ $# -gt 0 && ( "$*" == *"up"* || "$*" == *"-up"* || "$*" == *"update"* || "
     echo "➼ Update Found! Updating .." 
     dos2unix $REMOTE_FILE && sudo mv "$REMOTE_FILE" /usr/local/bin/linky
     sudo chmod +xwr /usr/local/bin/linky
-    rm -f "$REMOTE_FILE"
+    rm -f "$REMOTE_FILE" 2>/dev/null
   else
     echo "➼ Already UptoDate"
-    rm -f "$REMOTE_FILE" 
+    rm -f "$REMOTE_FILE" 2>/dev/null
     exit 0
   fi
   exit 0
