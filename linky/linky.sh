@@ -31,6 +31,7 @@ fi
 #  sudo chmod +xwr /usr/local/bin/linky
 #  exit 0
 #fi
+echo "test"
 # Update
 if [[ $# -gt 0 && ( "$*" == *"-up"* || "$*" == *"--update"* ) ]]; then
   echo "➼ Checking For Updates"
