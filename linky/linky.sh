@@ -25,12 +25,6 @@ if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]]
   echo ""
   exit 0
 fi
-#Update
-#if [[ "$*" == *"-up"* ]] || [[ "$*" == *"--update"* ]]; then
-#  sudo rm -rf /usr/local/bin/linky && sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/linky.sh -O /usr/local/bin/linky
-#  sudo chmod +xwr /usr/local/bin/linky
-#  exit 0
-#fi
 # Update
 if [[ $# -gt 0 && ( "$*" == *"-up"* || "$*" == *"--update"* ) ]]; then
   echo "➼ Checking For Updates"
