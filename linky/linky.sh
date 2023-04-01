@@ -26,7 +26,7 @@ if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]]
   echo "Extended Help"
   echo "-u,     --url            Specify the URL to scrape (Required)"
   echo "-o,     --output_dir     Specify the directory to save the output files (Required)"
-  echo "-gh,    --github_token   Specify manually else (Not Required if $HOME/.config/.github_tokens exists)"
+  echo "-gh,    --github_token   Specify manually: ghp_xxx (Not Required if $HOME/.config/.github_tokens exists)"
   echo "-d,     --deep           Specify if Gospider, Hakrawler, Katana & XnLinkfinder should run with depth 5. (Super Slow)"
   echo "-h,     --headers        Specify additional headers or cookies to use in the HTTP request (optional)"
   echo "-init,  --init           Initialize ➼ linky by dry-running it against example.com (Only run on a fresh Install)"
