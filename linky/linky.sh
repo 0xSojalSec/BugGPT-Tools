@@ -31,7 +31,8 @@ if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]]
   echo "-h,    --headers        Specify additional headers or cookies to use in the HTTP request (optional)"
   echo "-init, --init           Initialize ➼ linky by dry-running it against example.com (Only run on a fresh Install)"
   echo "-up,   --update         Update linky"
-  echo "-cls,  --clean          Cleans /tmp/ files after run"
+  echo "-ctmp, --clean-tmp      Cleans /tmp/ files after run"
+  echo "-curl, --clean-urls     Removes noisey junk urls (godeclutter | urless)"
   echo ""
   echo "Example Usage: "
   echo 'linky --url https://example.com --output_dir /path/to/outputdir --github_token ghp_xyz --headers "Authorization: Bearer token; Cookie: cookie_value"'
