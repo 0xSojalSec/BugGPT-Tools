@@ -4,7 +4,7 @@ Slightly revamped vesion of TomNomNom's [Inscope](https://github.com/tomnomnom/h
 ## Installation
 - **Bash** : 
 ```bash
-sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/scopeview/scopeview.sh -O /usr/local/bin/scopeview.sh && sudo chmod +xwr /usr/local/bin/scopeview.sh 
+sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/scopeview/scopeview.sh -O /usr/local/bin/scopeview && sudo chmod +xwr /usr/local/bin/scopeview
 ```
 - **Go** : 
 ```bash
