@@ -301,17 +301,19 @@ roboxtractor -u $url -s -m 1 -wb -v | sort -u | awk '{print "/" $1}' | anew $out
 echo "➼ Running xnLinkFinder on: $url" && sleep 3s
 if [ -n "$optionalHeaders" ]; then 
    if [ -n "$deep" ]; then
-    python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py -i $url -H "$optionalHeaders" -sp $url -d 5 -sf .*$scope_domain -v -insecure -o $outputDir/tmp/urls.txt -op $outputDir/parameters.txt
+    python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py -i $url -H "$optionalHeaders" -sp $url -d 5 -sf .*$scope_domain -v -insecure -o $outputDir/tmp/xnl-urls.txt -op $outputDir/tmp/xnl-parameters.txt
   else
-    python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py -i $url -H "$optionalHeaders" -sp $url -sf .*$scope_domain -v -insecure -o $outputDir/tmp/urls.txt -op $outputDir/parameters.txt
+    python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py -i $url -H "$optionalHeaders" -sp $url -sf .*$scope_domain -v -insecure -o $outputDir/tmp/xnl-urls.txt -op $outputDir/tmp/xnl-parameters.txt
   fi
 else
   if [ -n "$deep" ]; then
-    python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py -i $url -sp $url -d 5 -sf .*$scope_domain -v -insecure -o $outputDir/tmp/urls.txt -op $outputDir/parameters.txt
+    python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py -i $url -sp $url -d 5 -sf .*$scope_domain -v -insecure -o $outputDir/tmp/xnl-urls.txt -op $outputDir/tmp/xnl-parameters.txt
   else
-    python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py -i $url -sp $url -sf .*$scope_domain -v -insecure -o $outputDir/tmp/urls.txt -op $outputDir/parameters.txt
+    python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py -i $url -sp $url -sf .*$scope_domain -v -insecure -o $outputDir/tmp/xnl-urls.txt -op $outputDir/tmp/xnl-parameters.txt
   fi
 fi
+cat $outputDir/tmp/xnl-urls.txt | anew $outputDir/tmp/urls.txt
+cat $outputDir/tmp/xnl-parameters.txt | anew $outputDir/parameters.txt
 clear 
 
 #Waymore
@@ -323,6 +325,7 @@ cat $outputDir/waymore/waymore-urls.txt | anew $outputDir/tmp/urls.txt
 cd $HOME/Tools/xnLinkFinder && python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py -i $outputDir/waymore/waymore-responses --origin --output $outputDir/waymore/waymore-linkfinder.txt --output-params $outputDir/waymore/waymore-params.txt
 cat $outputDir/waymore/waymore-linkfinder.txt | grep -aEo 'https?://[^ ]+' | sed 's/]$//' | anew $outputDir/tmp/urls.txt
 cat $outputDir/waymore/waymore-params.txt | anew $outputDir/parameters.txt
+cat $outputDir/waymore/waymore-linkfinder.txt | cut -d'[' -f1 | anew $outputDir/endpoints.txt
 
 #Dedupe & Filter Scope
 sort -u $outputDir/tmp/urls.txt -o $outputDir/tmp/urls.txt
@@ -343,6 +346,7 @@ cp -r $outputDir/jsfiles /tmp/$domain-jsfiles
 echo "➼ Finding Links & Params [xnLinkFinder]"
 cd $HOME/Tools/xnLinkFinder && python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py -i /tmp/$domain-jsfiles --origin --output /tmp/$domain-jsfile-links.txt --output-params /tmp/$domain-jsfiles-params.txt
 cp /tmp/$domain-jsfile-links.txt $outputDir/jsfile-links.txt && cp /tmp/$domain-jsfiles-params.txt $outputDir/jsfiles-params.txt
+cat $outputDir/jsfile-links.txt | cut -d'[' -f1 | anew $outputDir/endpoints.txt
 cat $outputDir/jsfile-links.txt | grep -aEo 'https?://[^ ]+' | sed 's/]$//' | anew $outputDir/tmp/urls.txt
 cat $outputDir/jsfiles-params.txt | anew $outputDir/parameters.txt 
 echo "=========================================="
@@ -353,7 +357,8 @@ cat $outputDir/urls.txt | sed '$!N; /^\(.*\)\n\1$/!P; D'| grep -P '\.php|\.asp|\
 cat $outputDir/urls.txt | grep -Po '(?:\?|\&)(?<key>[\w]+)(?:\=|\&?)(?<value>[\w+,.-]*)' | tr -d '?' | tr -d '&' | sed 's/=.*//' | sort -u | uniq | anew $outputDir/parameters.txt
 
 #QOL Changes
-find $outputDir -type f -size 0 -delete  
+find $outputDir -type f -size 0 -delete
+cd $outputDir ; for file in ./* ; do sort -u "$file" -o "$file"; done  
 cd $originalDir
 echo "➼ All Links Scraped and Saved in: $outputDir"
 files=("$outputDir/endpoints.txt" "$outputDir/js.txt" "$outputDir/jsfile-links.txt" "$outputDir/jsfiles-params.txt" "$outputDir/parameters.txt" "$outputDir/robots.txt" "$outputDir/urls.txt" )
