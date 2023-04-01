@@ -136,7 +136,7 @@ export outputDir=$outputDir
 github_tokens="$HOME/.config/.github_tokens"
 if [ -s "$github_tokens" ]; then
   random_token=$(shuf -n 1 "$github_tokens")
-  export githubToken=$random_line
+  export githubToken=$random_token
 else
   export githubToken=$githubToken
 fi
@@ -221,10 +221,10 @@ for path in "${paths[@]}"; do
         chmod +x $HOME/Tools/JSA/automation.sh && chmod +x $HOME/Tools/JSA/automation/404_js_wayback.sh
         #xnl-h4ck3r/Waymore
         cd $HOME/Tools && git clone https://github.com/xnl-h4ck3r/waymore.git && cd $HOME/Tools/waymore  && pip3 install -r requirements.txt 
-        python3 $HOME/Tools/waymore/setup.py install
+        sudo python3 $HOME/Tools/waymore/setup.py install
         #xnl-h4ck3r/xnLinkFinder 
         cd $HOME/Tools && git clone https://github.com/xnl-h4ck3r/xnLinkFinder.git && cd $HOME/Tools/xnLinkFinder
-        sudo python $HOME/Tools/xnLinkFinder/setup.py install        
+        sudo python3 $HOME/Tools/xnLinkFinder/setup.py install        
     fi
 done
 #Extract root domain name 
