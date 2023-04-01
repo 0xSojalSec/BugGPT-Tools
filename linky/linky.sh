@@ -93,7 +93,6 @@ do
       exit 1
     fi
     # Create directory
-    mkdir -p "$outputDir"
     mkdir -p "$outputDir/tmp/"
     echo "➼ $outputDir created successfully"
     ;;
@@ -121,6 +120,10 @@ do
      deep=1
      shift
     ;;
+    -ctmp|--clean-tmp) # handle -cls option
+     clean_tmp=1
+     shift
+    ;;    
     *)    # unknown option
     echo "Error: Invalid option '$key' , try --help for Usage$(rm -rf $outputDir 2>/dev/null)"
     exit 1
@@ -139,12 +142,14 @@ else
 fi
 export optionalHeaders=$optionalHeaders
 export deep=$deep
+export clean_tmp=$clean_tmp
 #Recheck Values
 echo "url: $url"
 echo "outputDir: $outputDir"
 echo "githubToken: $githubToken"
 echo "optionalHeaders: $optionalHeaders"
 echo "deep: $deep"
+echo "/tmp/clean: $clean_tmp"
 #Setup Vars
 originalDir=$(pwd)
 # Check if parallel and chromium-chromedriver are installed, and install them if not
@@ -372,7 +377,7 @@ for i in "${!files[@]}"; do
     fi
 done
 #Removes Temp
-if [[ "$*" == *"--clean"* ]] || [[ "$*" == *"-cls"* ]] || [[ "$*" == *"clean"* ]] ; then
+if [ -n "$clean_tmp" ]; then
 rm -rf $outputDir/tmp 2>/dev/null
 fi
 
