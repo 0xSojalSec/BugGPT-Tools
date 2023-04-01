@@ -222,7 +222,7 @@ scope_domain=$(echo "$url" | unfurl apexes)
 domain=$(echo "$url" | unfurl domains)
 #Set .scope 
 echo "Scope is set as: "
-echo $scope_domain | scopegen -in | tee /tmp/$domain.scope
+echo $scope_domain | scopegen -in | tee $outputDir/.scope
 echo ""
 #Start Tools
 #Gau
@@ -323,7 +323,7 @@ cat $outputDir/waymore/waymore-linkfinder.txt | cut -d'[' -f1 | anew $outputDir/
 
 #Dedupe & Filter Scope
 sort -u $outputDir/tmp/urls.txt -o $outputDir/tmp/urls.txt
-cat $outputDir/tmp/urls.txt | scopeview -s /tmp/$domain.scope | sort -u -o $outputDir/urls.txt
+cat $outputDir/tmp/urls.txt | scopeview -s $outputDir/.scope | sort -u -o $outputDir/urls.txt
 
 #JavaScript enum
 cat $outputDir/urls.txt | grep -aEi "\.js([?#].*)?$" | anew $outputDir/js.txt
@@ -347,6 +347,7 @@ echo "=========================================="
 
 #Endpoints
 cat $outputDir/urls.txt | sed '$!N; /^\(.*\)\n\1$/!P; D'| grep -P '\.php|\.asp|\.js|\.jsp|\.jsp' | anew $outputDir/endpoints.txt
+sed -i 's#^/##' $outputDir/endpoints.txt
 #Parameters
 cat $outputDir/urls.txt | grep -Po '(?:\?|\&)(?<key>[\w]+)(?:\=|\&?)(?<value>[\w+,.-]*)' | tr -d '?' | tr -d '&' | sed 's/=.*//' | sort -u | uniq | anew $outputDir/parameters.txt
 
