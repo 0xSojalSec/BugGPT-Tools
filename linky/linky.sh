@@ -172,7 +172,7 @@ if ! command -v pipx &> /dev/null; then
    python3 -m pipx ensurepath
 fi
 #Health Check for binaries
-binaries=("anew" "arjun" "fget" "gau" "gospider" "hakrawler" "js-beautify" "katana" "roboxtractor" "scopegen" "scopeview" "subjs" "waybackurls")
+binaries=("anew" "arjun" "fget" "gau" "gospider" "hakrawler" "js-beautify" "katana" "roboxtractor" "scopegen" "scopeview" "subjs" "unfurl" "waybackurls")
 for binary in "${binaries[@]}"; do
     if ! command -v "$binary" &> /dev/null; then
         echo "➼ Error: $binary not found"
@@ -189,6 +189,7 @@ for binary in "${binaries[@]}"; do
         go install -v github.com/Azathothas/BugGPT-Tools/scopegen@main
         sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/scopeview/scopeview.sh -O /usr/local/bin/scopeview && sudo chmod +xwr /usr/local/bin/scopeview
         go install -v github.com/lc/subjs@latest
+        go install -v github.com/tomnomnom/unfurl@latest
         go install -v github.com/tomnomnom/waybackurls@latest
     fi
 done
@@ -215,22 +216,11 @@ for path in "${paths[@]}"; do
     fi
 done
 #Extract root domain name 
-function extract_scope_domain_name()
-{
-   scope_domain=$(echo $url | awk -F/ '{print $3}' | awk -F. '{if (NF>2) {print $(NF-1)"."$NF} else {print $0}}')
-   echo $scope_domain
-}
-scope_domain=$(extract_scope_domain_name $url)
+scope_domain=$(echo "$url" | unfurl apexes)
 #Extract full domain name
-function extract_domain_name() 
-{
-   domain=$(echo $url | awk -F/ '{print $3}')
-   echo $domain
-}
-domain=$(extract_domain_name $url)
+domain=$(echo "$url" | unfurl domains)
 #Set .scope 
-echo $scope_domain | scopegen -in >> /tmp/$domain.scope
-
+echo $scope_domain | scopegen -in | tee /tmp/$domain.scope
 #Start Tools
 #Gau
 echo "➼ Running gau on: $url" && sleep 3s
