@@ -195,7 +195,7 @@ binaries=("anew" "arjun" "fasttld" "fget" "gau" "godeclutter" "gospider" "hakraw
 for binary in "${binaries[@]}"; do
     if ! command -v "$binary" &> /dev/null; then
         echo "➼ Error: $binary not found"
-        echo "➼ Attempting to Install missing tools"
+        echo "➼ Attempting to Install $binary"
         case "$binary" in
             "anew") go install -v github.com/tomnomnom/anew@latest ;;
             "arjun") pipx install -f "git+https://github.com/s0md3v/Arjun.git" --include-deps ;;
