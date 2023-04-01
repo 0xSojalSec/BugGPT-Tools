@@ -388,6 +388,7 @@ cat $outputDir/urls.txt | grep -Po '(?:\?|\&)(?<key>[\w]+)(?:\=|\&?)(?<value>[\w
 #QOL Changes
 find $outputDir -type f -size 0 -delete
 find $outputDir -type f -name "*.txt" -not -name ".*" -exec sort -u {} -o {} \;  
+echo ""
 cd $originalDir
 echo "➼ All Links Scraped and Saved in: $outputDir"
 files=("$outputDir/endpoints.txt" "$outputDir/js.txt" "$outputDir/jsfile-links.txt" "$outputDir/jsfiles-params.txt" "$outputDir/parameters.txt" "$outputDir/robots.txt" "$outputDir/urls.txt" )
