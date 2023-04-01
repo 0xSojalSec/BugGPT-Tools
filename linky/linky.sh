@@ -31,6 +31,7 @@ if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]]
   echo "-h,    --headers        Specify additional headers or cookies to use in the HTTP request (optional)"
   echo "-init, --init           Initialize ➼ linky by dry-running it against example.com (Only run on a fresh Install)"
   echo "-up,   --update         Update linky"
+  echo "-cls,  --clean          Cleans /tmp/ files after run"
   echo ""
   echo "Example Usage: "
   echo 'linky --url https://example.com --output_dir /path/to/outputdir --github_token ghp_xyz --headers "Authorization: Bearer token; Cookie: cookie_value"'
@@ -226,64 +227,65 @@ echo $scope_domain | scopegen -in | tee /tmp/$domain.scope
 #Start Tools
 #Gau
 echo "➼ Running gau on: $url" && sleep 3s
-echo $url | gau --threads 20 | anew $outputDir/tmp/urls.txt && clear
+echo $url | gau --threads 20 | anew $outputDir/tmp/gau-urls.txt
+cat $outputDir/tmp/gau-urls.txt | anew -q $outputDir/tmp/urls.txt && clear
 
 #Github-Endpoints
 echo "➼ Running github-endpoints on: $url" && sleep 3s
-rm -rf /tmp/$scope_domain-gh.txt 
-python3 $HOME/Tools/github-search/github-endpoints.py -t $githubToken -d $domain | anew /tmp/$scope_domain-gh.txt
-cat /tmp/$scope_domain-gh.txt | anew $outputDir/tmp/urls.txt
+python3 $HOME/Tools/github-search/github-endpoints.py -t $githubToken -d $domain | anew $outputDir/tmp/git-urls.txt
+cat $outputDir/tmp/git-urls.txt | anew $outputDir/tmp/urls.txt
 
 #GoSpider
 echo "➼ Running GoSpider on: $url "
 if [ -n "$optionalHeaders" ]; then 
   if [ -n "$deep" ]; then
-    gospider -s $url --other-source --include-subs --include-other-source --concurrent 50 --depth 5 -H "$optionalHeaders" --quiet | grep -aEo 'https?://[^ ]+' | sed 's/]$//' | anew $outputDir/tmp/urls.txt
+    gospider -s $url --other-source --include-subs --include-other-source --concurrent 50 --depth 5 -H "$optionalHeaders" --quiet | grep -aEo 'https?://[^ ]+' | sed 's/]$//' | anew $outputDir/tmp/gospider-urls.txt
   else
-    gospider -s $url --other-source --include-subs --include-other-source --concurrent 20 -H "$optionalHeaders" --quiet | grep -aEo 'https?://[^ ]+' | sed 's/]$//' |  anew $outputDir/tmp/urls.txt
+    gospider -s $url --other-source --include-subs --include-other-source --concurrent 20 -H "$optionalHeaders" --quiet | grep -aEo 'https?://[^ ]+' | sed 's/]$//' |  anew $outputDir/tmp/gospider-urls.txt
   fi
 else
   if [ -n "$deep" ]; then
-    gospider -s $url --other-source --include-subs --include-other-source --concurrent 50 --depth 5 --quiet | grep -aEo 'https?://[^ ]+' | sed 's/]$//' | anew $outputDir/tmp/urls.txt
+    gospider -s $url --other-source --include-subs --include-other-source --concurrent 50 --depth 5 --quiet | grep -aEo 'https?://[^ ]+' | sed 's/]$//' | anew $outputDir/tmp/gospider-urls.txt
   else 
-    gospider -s $url --other-source --include-subs --include-other-source --concurrent 20 --quiet | grep -aEo 'https?://[^ ]+' | sed 's/]$//' | anew $outputDir/tmp/urls.txt
+    gospider -s $url --other-source --include-subs --include-other-source --concurrent 20 --quiet | grep -aEo 'https?://[^ ]+' | sed 's/]$//' | anew $outputDir/tmp/gospider-urls.txt
   fi
 fi
-clear 
+cat $outputDir/tmp/gospider-urls.txt | anew -q $outputDir/tmp/urls.txt && clear 
 
 #Hakrawler
 echo "➼ Running hakrawler on: $url" && sleep 3s
 if [ -n "$optionalHeaders" ]; then 
    if [ -n "$deep" ]; then
-   echo $url | hakrawler -d 5 -insecure -t 20 -h "$optionalHeaders" | anew $outputDir/tmp/urls.txt
+   echo $url | hakrawler -d 5 -insecure -t 50 -h "$optionalHeaders" | anew $outputDir/tmp/hak-urls.txt
   else
-   echo $url | hakrawler -insecure -t 20 -h "$optionalHeaders" | anew $outputDir/tmp/urls.txt
+   echo $url | hakrawler -insecure -t 20 -h "$optionalHeaders" | anew $outputDir/tmp/hak-urls.txt
   fi
 else
    if [ -n "$deep" ]; then
-    echo $url | hakrawler -d 5 -insecure -t 20 | anew $outputDir/tmp/urls.txt
+    echo $url | hakrawler -d 5 -insecure -t 50 | anew $outputDir/tmp/hak-urls.txt
   else 
-   echo $url | hakrawler -insecure -t 20 | anew $outputDir/tmp/urls.txt
+   echo $url | hakrawler -insecure -t 20 | anew $outputDir/tmp/hak-urls.txt
   fi
 fi 
+cat $outputDir/tmp/hak-urls.txt | anew -q $outputDir/tmp/urls.txt && clear
 
 #Katana
 rm -rf /tmp/$scope_domain-katana.txt
 echo "➼ Running Katana on: $url" && sleep 3s
 if [ -n "$optionalHeaders" ]; then 
    if [ -n "$deep" ]; then
-    echo $url | katana -d 5 -H "$optionalHeaders" -o /tmp/$scope_domain-katana.txt 
+    echo $url | katana -d 5 -H "$optionalHeaders" -o $outputDir/tmp/katana-urls.txt 
   else 
-    echo $url | katana -H "$optionalHeaders" -o /tmp/$scope_domain-katana.txt
+    echo $url | katana -H "$optionalHeaders" -o $outputDir/tmp/katana-urls.txt 
   fi
 else
    if [ -n "$deep" ]; then
-    echo $url | katana -d 5 -o /tmp/$scope_domain-katana.txt
+    echo $url | katana -d 5 -o $outputDir/tmp/katana-urls.txt 
   else
-    echo $url | katana -o /tmp/$scope_domain-katana.txt
+    echo $url | katana -o $outputDir/tmp/katana-urls.txt 
   fi
 fi
-cat /tmp/$scope_domain-katana.txt | anew -q $outputDir/tmp/urls.txt && clear 
+cat $outputDir/tmp/katana-urls.txt | anew -q $outputDir/tmp/urls.txt && clear 
 
 #Robots.txt
 echo "➼ Finding all robots.txt Endpoints on: $url" 
@@ -363,6 +365,10 @@ for i in "${!files[@]}"; do
         echo "➼ File ${files[i]} not found"
     fi
 done
+#Removes Temp
+if [[ "$*" == *"--clean"* ]] || [[ "$*" == *"-cls"* ]] || [[ "$*" == *"clean"* ]] ; then
+rm -rf $outputDir/tmp 2>/dev/null
+fi
 
 #Check For Update on Script end
 echo ""
