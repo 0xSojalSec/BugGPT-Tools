@@ -122,7 +122,7 @@ do
      shift
     ;;
     *)    # unknown option
-    echo "Error: Invalid option '$key' , try --help for more information"
+    echo "Error: Invalid option '$key' , try --help for Usage$(rm -rf $outputDir 2>/dev/null)"
     exit 1
     ;;
   esac
@@ -276,7 +276,6 @@ fi
 cat $outputDir/tmp/hak-urls.txt | anew -q $outputDir/tmp/urls.txt && clear
 
 #Katana
-rm -rf /tmp/$scope_domain-katana.txt
 echo "➼ Running Katana on: $url" && sleep 3s
 if [ -n "$optionalHeaders" ]; then 
    if [ -n "$deep" ]; then
