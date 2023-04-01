@@ -24,15 +24,15 @@ if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]]
   echo "➼ Usage: linky -u <url> -o /path/to/outputdir -gh <github_token> -h <optional Headers>"
   echo ""
   echo "Extended Help"
-  echo "-u,    --url            Specify the URL to scrape (Required)"
-  echo "-o,    --output_dir     Specify the directory to save the output files (Required)"
-  echo "-gh,   --github_token   Specify a GitHub personal access token (Not Required if $HOME/.config/.github_tokens exists)"
-  echo "-d,    --deep           Specify if Gospider, Hakrawler, Katana & XnLinkfinder should run with depth 5. (Super Slow)"
-  echo "-h,    --headers        Specify additional headers or cookies to use in the HTTP request (optional)"
-  echo "-init, --init           Initialize ➼ linky by dry-running it against example.com (Only run on a fresh Install)"
-  echo "-up,   --update         Update linky"
-  echo "-ctmp, --clean-tmp      Cleans /tmp/ files after run"
-  echo "-curl, --clean-urls     Removes noisey junk urls (godeclutter | urless)"
+  echo "-u,     --url            Specify the URL to scrape (Required)"
+  echo "-o,     --output_dir     Specify the directory to save the output files (Required)"
+  echo "-gh,    --github_token   Specify manually else (Not Required if $HOME/.config/.github_tokens exists)"
+  echo "-d,     --deep           Specify if Gospider, Hakrawler, Katana & XnLinkfinder should run with depth 5. (Super Slow)"
+  echo "-h,     --headers        Specify additional headers or cookies to use in the HTTP request (optional)"
+  echo "-init,  --init           Initialize ➼ linky by dry-running it against example.com (Only run on a fresh Install)"
+  echo "-up,    --update         Update linky"
+  echo "-ctmp,  --clean-tmp      Cleans /tmp/ files after run"
+  echo "-curls, --clean-urls     Removes noisey junk urls (godeclutter | urless)"
   echo ""
   echo "Example Usage: "
   echo 'linky --url https://example.com --output_dir /path/to/outputdir --github_token ghp_xyz --headers "Authorization: Bearer token; Cookie: cookie_value"'
@@ -117,15 +117,19 @@ do
     shift 
     shift 
     ;;
-    -d|--deep) # treat --deep as a flag option
+    -d|--deep) 
      deep=1
      shift
     ;;
-    -ctmp|--clean-tmp) # handle -cls option
+    -ctmp|--clean-tmp) 
      clean_tmp=1
      shift
-    ;;    
-    *)    # unknown option
+    ;;  
+    -curls|--clean-urls) 
+     clean_urls=1
+     shift
+    ;;      
+    *) 
     echo "Error: Invalid option '$key' , try --help for Usage$(rm -rf $outputDir 2>/dev/null)"
     exit 1
     ;;
@@ -150,7 +154,8 @@ echo "outputDir: $outputDir"
 echo "githubToken: $githubToken"
 echo "optionalHeaders: $optionalHeaders"
 echo "deep: $deep"
-echo "/tmp/clean: $clean_tmp"
+echo "Clean_tmp: $clean_tmp"
+echo "Clean_URLs: $clean_urls"
 #Setup Vars
 originalDir=$(pwd)
 # Check if parallel and chromium-chromedriver are installed, and install them if not
@@ -185,7 +190,7 @@ if ! command -v pipx &> /dev/null; then
    python3 -m pipx ensurepath
 fi
 #Health Check for binaries
-binaries=("anew" "arjun" "fget" "gau" "gospider" "hakrawler" "js-beautify" "katana" "roboxtractor" "scopegen" "scopeview" "subjs" "unfurl" "waybackurls")
+binaries=("anew" "arjun" "fget" "gau" "godeclutter" "gospider" "hakrawler" "js-beautify" "katana" "roboxtractor" "scopegen" "scopeview" "subjs" "unfurl" "waybackurls")
 for binary in "${binaries[@]}"; do
     if ! command -v "$binary" &> /dev/null; then
         echo "➼ Error: $binary not found"
@@ -194,6 +199,7 @@ for binary in "${binaries[@]}"; do
         pipx install -f "git+https://github.com/s0md3v/Arjun.git" --include-deps
         go install -v github.com/lc/gau/v2/cmd/gau@latest
         GO111MODULE=on && go get -u -v github.com/bp0lr/fget
+        go install -v github.com/c3l3si4n/godeclutter@main
         go install -v github.com/jaeles-project/gospider@latest
         go install -v github.com/hakluke/hakrawler@latest
         sudo npm -g install js-beautify
@@ -207,7 +213,7 @@ for binary in "${binaries[@]}"; do
     fi
 done
 #Health Check for Tools
-paths=("$HOME/Tools/JSA/automation.sh" "$HOME/Tools/Arjun/arjun/db/large.txt" "$HOME/Tools/github-search/github-endpoints.py" "$HOME/Tools/xnLinkFinder/xnLinkFinder.py" "$HOME/Tools/waymore/waymore.py")
+paths=("$HOME/Tools/JSA/automation.sh" "$HOME/Tools/Arjun/arjun/db/large.txt" "$HOME/Tools/github-search/github-endpoints.py" "$HOME/Tools/" "$HOME/Tools/waymore/waymore.py" "$HOME/Tools/xnLinkFinder/xnLinkFinder.py")
 for path in "${paths[@]}"; do
     if [ ! -f "$path" ]; then
         echo "➼ Error: $path not found"
@@ -220,12 +226,15 @@ for path in "${paths[@]}"; do
         cd $HOME/Tools && git clone https://github.com/w9w/JSA.git && cd $HOME/Tools/JSA && pip3 install -r requirements.txt
         wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/assets/JSA_automation.sh -O $HOME/Tools/JSA/automation.sh
         chmod +x $HOME/Tools/JSA/automation.sh && chmod +x $HOME/Tools/JSA/automation/404_js_wayback.sh
+        #xnl-h4ck3r/Urless
+        cd $HOME/Tools && git clone https://github.com/xnl-h4ck3r/urless.git && cd $HOME/Tools/urless 
+        python3 $HOME/Tools/urless/setup.py install
         #xnl-h4ck3r/Waymore
         cd $HOME/Tools && git clone https://github.com/xnl-h4ck3r/waymore.git && cd $HOME/Tools/waymore  && pip3 install -r requirements.txt 
-        sudo python3 $HOME/Tools/waymore/setup.py install
+        cd $HOME/Tools/waymore && python3 $HOME/Tools/waymore/setup.py install
         #xnl-h4ck3r/xnLinkFinder 
         cd $HOME/Tools && git clone https://github.com/xnl-h4ck3r/xnLinkFinder.git && cd $HOME/Tools/xnLinkFinder
-        sudo python3 $HOME/Tools/xnLinkFinder/setup.py install        
+        python3 $HOME/Tools/xnLinkFinder/setup.py install        
     fi
 done
 #Extract root domain name 
@@ -334,7 +343,16 @@ cat $outputDir/waymore/waymore-linkfinder.txt | cut -d'[' -f1 | anew $outputDir/
 
 #Dedupe & Filter Scope
 sort -u $outputDir/tmp/urls.txt -o $outputDir/tmp/urls.txt
-cat $outputDir/tmp/urls.txt | scopeview -s $outputDir/.scope | sort -u -o $outputDir/urls.txt
+if [ -n "$clean_urls" ]; then 
+  echo "➼ Removing Junk URLs (urless): $url"
+  cd $HOME/Tools/urless && python3 $HOME/Tools/urless/urless.py --input $outputDir/tmp/urls.txt --no-banner --language --filter-extensions --keep-human-written	--keep-yyyymm -o $outputDir/tmp/urless.txt
+  echo "➼ Decluttering URLs (godeclutter): $url" 
+  cat $outputDir/tmp/urls.txt | godeclutter | anew $outputDir/tmp/decluttered-urls.txt
+  #merge and filter scope
+  cat $outputDir/tmp/urless.txt $outputDir/tmp/decluttered-urls.txt | scopeview -s $outputDir/.scope | sort -u -o $outputDir/urls.txt
+else
+  cat $outputDir/tmp/urls.txt | scopeview -s $outputDir/.scope | sort -u -o $outputDir/urls.txt
+fi
 
 #JavaScript enum
 cat $outputDir/urls.txt | grep -aEi "\.js([?#].*)?$" | anew $outputDir/js.txt
@@ -364,7 +382,7 @@ cat $outputDir/urls.txt | grep -Po '(?:\?|\&)(?<key>[\w]+)(?:\=|\&?)(?<value>[\w
 
 #QOL Changes
 find $outputDir -type f -size 0 -delete
-cd $outputDir ; for file in ./* ; do sort -u "$file" -o "$file"; done  
+find $outputDir -type f -not -name ".*" -exec sort -u {} -o {} \;  
 cd $originalDir
 echo "➼ All Links Scraped and Saved in: $outputDir"
 files=("$outputDir/endpoints.txt" "$outputDir/js.txt" "$outputDir/jsfile-links.txt" "$outputDir/jsfiles-params.txt" "$outputDir/parameters.txt" "$outputDir/robots.txt" "$outputDir/urls.txt" )
