@@ -190,7 +190,7 @@ if ! command -v pipx &> /dev/null; then
    python3 -m pipx ensurepath
 fi
 #Health Check for binaries
-binaries=("anew" "arjun" "fget" "gau" "godeclutter" "gospider" "hakrawler" "js-beautify" "katana" "roboxtractor" "scopegen" "scopeview" "subjs" "unfurl" "waybackurls")
+binaries=("anew" "arjun" "fasttld" "fget" "gau" "godeclutter" "gospider" "hakrawler" "js-beautify" "katana" "roboxtractor" "scopegen" "scopeview" "subjs" "unfurl" "waybackurls")
 for binary in "${binaries[@]}"; do
     if ! command -v "$binary" &> /dev/null; then
         echo "➼ Error: $binary not found"
@@ -198,6 +198,7 @@ for binary in "${binaries[@]}"; do
         go install -v github.com/tomnomnom/anew@latest
         pipx install -f "git+https://github.com/s0md3v/Arjun.git" --include-deps
         go install -v github.com/lc/gau/v2/cmd/gau@latest
+        sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/assets/fasttld -O /usr/local/bin/fasttld && sudo chmod +xwr /usr/local/bin/fasttld
         GO111MODULE=on && go get -u -v github.com/bp0lr/fget
         go install -v github.com/c3l3si4n/godeclutter@main
         go install -v github.com/jaeles-project/gospider@latest
@@ -239,11 +240,13 @@ for path in "${paths[@]}"; do
 done
 #Extract root domain name 
 scope_domain=$(echo "$url" | unfurl apexes)
+alt_scope_domain=$(fasttld extract $url | grep -E 'domain:|suffix:' | awk '{print $2}' | sed -n '2,3p' | sed -n '1p;2p' | tr '\n' '.' | sed 's/\.$//' ; echo)
 #Extract full domain name
 domain=$(echo "$url" | unfurl domains)
 #Set .scope 
 echo "Scope is set as: "
-echo $scope_domain | scopegen -in | tee $outputDir/.scope
+echo $scope_domain | scopegen -in | anew $outputDir/.scope
+echo $alt_scope_domain | scopegen -in | anew $outputDir/.scope
 echo ""
 #Start Tools
 #Gau
