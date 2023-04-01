@@ -220,6 +220,8 @@ scope_domain=$(echo "$url" | unfurl apexes)
 #Extract full domain name
 domain=$(echo "$url" | unfurl domains)
 #Set .scope 
+echo ""
+echo "Scope is set as: "
 echo $scope_domain | scopegen -in | tee /tmp/$domain.scope
 #Start Tools
 #Gau
