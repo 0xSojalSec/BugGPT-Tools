@@ -145,6 +145,10 @@ if ! command -v chromium >/dev/null 2>&1; then
     echo "➼ chromium-chromedriver is not installed. Installing..."
     sudo apt-get update && sudo apt-get install chromium chromium-chromedriver chromium-common chromium-driver -y
 fi
+if ! command -v dos2unix >/dev/null 2>&1; then
+    echo "➼ dos2unix is not installed. Installing..."
+    sudo apt-get update && sudo apt-get install dos2unix -y
+fi
 if ! command -v go &> /dev/null 2>&1; then
     echo "➼ golang is not installed. Installing..."
     cd /tmp && git clone https://github.com/udhos/update-golang  && cd /tmp/update-golang && sudo ./update-golang.sh
