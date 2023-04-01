@@ -26,7 +26,7 @@ if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]]
   echo "Extended Help"
   echo "-u,    --url            Specify the URL to scrape (Required)"
   echo "-o,    --output_dir     Specify the directory to save the output files (Required)"
-  echo "-gh,   --github_token   Specify a GitHub personal access token (Required if you want to fetch from github)"
+  echo "-gh,   --github_token   Specify a GitHub personal access token (Not Required if $HOME/.config/.github_tokens exists)"
   echo "-d,    --deep           Specify if Gospider, Hakrawler, Katana & XnLinkfinder should run with depth 5. (Super Slow)"
   echo "-h,    --headers        Specify additional headers or cookies to use in the HTTP request (optional)"
   echo "-init, --init           Initialize ➼ linky by dry-running it against example.com (Only run on a fresh Install)"
@@ -130,7 +130,13 @@ done
 # Set default values
 export url=$url
 export outputDir=$outputDir
-export githubToken=$githubToken
+github_tokens="$HOME/.config/.github_tokens"
+if [ -s "$github_tokens" ]; then
+  random_token=$(shuf -n 1 "$github_tokens")
+  export githubToken=$random_line
+else
+  export githubToken=$githubToken
+fi
 export optionalHeaders=$optionalHeaders
 export deep=$deep
 #Recheck Values
