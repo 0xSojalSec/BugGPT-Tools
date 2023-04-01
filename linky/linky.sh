@@ -342,7 +342,7 @@ cat $outputDir/waymore/waymore-urls.txt | anew $outputDir/tmp/urls.txt
 cd $HOME/Tools/xnLinkFinder && python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py -i $outputDir/waymore/waymore-responses --origin --output $outputDir/waymore/waymore-linkfinder.txt --output-params $outputDir/waymore/waymore-params.txt
 cat $outputDir/waymore/waymore-linkfinder.txt | grep -aEo 'https?://[^ ]+' | sed 's/]$//' | anew $outputDir/tmp/urls.txt
 cat $outputDir/waymore/waymore-params.txt | anew $outputDir/parameters.txt
-cat $outputDir/waymore/waymore-linkfinder.txt | cut -d'[' -f1 | anew $outputDir/endpoints.txt
+cat $outputDir/waymore/waymore-linkfinder.txt | cut -d'[' -f1 |  scopeview -s $outputDir/.scope | anew $outputDir/endpoints.txt
 
 #Dedupe & Filter Scope
 sort -u $outputDir/tmp/urls.txt -o $outputDir/tmp/urls.txt
@@ -380,6 +380,8 @@ echo "=========================================="
 #Endpoints
 cat $outputDir/urls.txt | sed '$!N; /^\(.*\)\n\1$/!P; D'| grep -P '\.php|\.asp|\.js|\.jsp|\.jsp' | anew $outputDir/endpoints.txt
 sed -i 's#^/##' $outputDir/endpoints.txt
+sed -i '/^https\?:\/\//d' $outputDir/endpoints.txt
+
 #Parameters
 cat $outputDir/urls.txt | grep -Po '(?:\?|\&)(?<key>[\w]+)(?:\=|\&?)(?<value>[\w+,.-]*)' | tr -d '?' | tr -d '&' | sed 's/=.*//' | sort -u | uniq | anew $outputDir/parameters.txt
 
