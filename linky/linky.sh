@@ -32,7 +32,7 @@ if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]]
   echo "-init,  --init           Initialize ➼ linky by dry-running it against example.com (Only run on a fresh Install)"
   echo "-up,    --update         Update linky"
   echo "-ctmp,  --clean-tmp      Cleans /tmp/ files after run"
-  echo "-curls, --clean-urls     Removes noisey junk urls (godeclutter | urless)"
+  echo "-curls, --clean-urls     Removes noisy junk urls (godeclutter | urless)"
   echo ""
   echo "Example Usage: "
   echo 'linky --url https://example.com --output_dir /path/to/outputdir --github_token ghp_xyz --headers "Authorization: Bearer token; Cookie: cookie_value"'
