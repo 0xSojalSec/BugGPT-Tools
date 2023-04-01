@@ -388,8 +388,10 @@ cat $outputDir/urls.txt | grep -Po '(?:\?|\&)(?<key>[\w]+)(?:\=|\&?)(?<value>[\w
 find $outputDir -type f -size 0 -delete && find $outputDir -type d -empty -delete
 find $outputDir -type f -name "*.txt" -not -name ".*" -exec sort -u {} -o {} \;  
 echo ""
-cd $originalDir
+cd $originalDir && clear
 echo "➼ All Links Scraped and Saved in: $outputDir"
+echo ""
+cd $outputDir
 files=("$outputDir/endpoints.txt" "$outputDir/js.txt" "$outputDir/jsfile-links.txt" "$outputDir/jsfiles-params.txt" "$outputDir/parameters.txt" "$outputDir/robots.txt" "$outputDir/urls.txt" )
 labels=("Endpoints" "JavaScript URLs" "JavaScript Links & Endpoints" "JavaScript Parameters" "Parameters" "Robots.TXT" "URLs")
 for i in "${!files[@]}"; do
