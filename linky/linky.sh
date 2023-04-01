@@ -187,7 +187,7 @@ for binary in "${binaries[@]}"; do
         go install -v github.com/projectdiscovery/katana/cmd/katana@latest
         go env -w GO111MODULE="auto" ; go get -u github.com/Josue87/roboxtractor
         go install -v github.com/Azathothas/BugGPT-Tools/scopegen@main
-        go install -v github.com/Azathothas/BugGPT-Tools/scopeview@main
+        sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/scopeview/scopeview.sh -O /usr/local/bin/scopeview && sudo chmod +xwr /usr/local/bin/scopeview
         go install -v github.com/lc/subjs@latest
         go install -v github.com/tomnomnom/waybackurls@latest
     fi
