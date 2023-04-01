@@ -213,7 +213,7 @@ for binary in "${binaries[@]}"; do
     fi
 done
 #Health Check for Tools
-paths=("$HOME/Tools/JSA/automation.sh" "$HOME/Tools/Arjun/arjun/db/large.txt" "$HOME/Tools/github-search/github-endpoints.py" "$HOME/Tools/" "$HOME/Tools/waymore/waymore.py" "$HOME/Tools/xnLinkFinder/xnLinkFinder.py")
+paths=("$HOME/Tools/JSA/automation.sh" "$HOME/Tools/Arjun/arjun/db/large.txt" "$HOME/Tools/github-search/github-endpoints.py" "$HOME/Tools/urless" "$HOME/Tools/waymore/waymore.py" "$HOME/Tools/xnLinkFinder/xnLinkFinder.py")
 for path in "${paths[@]}"; do
     if [ ! -f "$path" ]; then
         echo "➼ Error: $path not found"
@@ -345,7 +345,7 @@ cat $outputDir/waymore/waymore-linkfinder.txt | cut -d'[' -f1 | anew $outputDir/
 sort -u $outputDir/tmp/urls.txt -o $outputDir/tmp/urls.txt
 if [ -n "$clean_urls" ]; then 
   echo "➼ Removing Junk URLs (urless): $url"
-  cd $HOME/Tools/urless && python3 $HOME/Tools/urless/urless.py --input $outputDir/tmp/urls.txt --no-banner --language --filter-extensions --keep-human-written	--keep-yyyymm -o $outputDir/tmp/urless.txt
+  cd $HOME/Tools/urless && python3 $HOME/Tools/urless/urless.py --input $outputDir/tmp/urls.txt -o $outputDir/tmp/urless.txt
   echo "➼ Decluttering URLs (godeclutter): $url" 
   cat $outputDir/tmp/urls.txt | godeclutter | anew $outputDir/tmp/decluttered-urls.txt
   #merge and filter scope
