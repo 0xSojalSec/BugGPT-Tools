@@ -8,18 +8,17 @@ cat << "EOF"
 ╚═╩╩╩═╩╩╬╗║
 ────────╚═╝
 EOF
-##Initialization, Only on a fresh install
-#if [[ "$*" == *"-init"* ]] || [[ "$*" == *"--init"* ]] || [[ "$*" == *"init"* ]] ; then
-#  echo "➼ Initializing linky..."
-#  echo "➼ Please exit (ctrl + c) if you already did this" 
-#  echo "➼ Exit (ctrl + c) if you start seeing output from wayback (➼ Running Waybackurls on: https://example5.com)" && sleep 10s
-#  echo "➼ Setting up...$(rm -rf /tmp/example.com /tmp/example2.com /tmp/example3.com 2>/dev/null)"
-#  linky -u https://example5.com -o /tmp/example.com -gh ghp_xyz 
-#  linky -u https://example5.com -o /tmp/example2.com -gh ghp_xyz
-#  linky -u https://example5.com -o /tmp/example3.com -gh ghp_xyz 
-#  rm -rf /tmp/example.com /tmp/example2.com /tmp/example3.com 2>/dev/null
-#  exit 0
-#fi
+#Initialization, Only on a fresh install
+if [[ "$*" == *"-init"* ]] || [[ "$*" == *"--init"* ]] || [[ "$*" == *"init"* ]] ; then
+  echo "➼ Initializing linky..."
+  echo "➼ Please exit (ctrl + c) if you already did this" 
+  echo "➼ Setting up...$(rm -rf /tmp/example.com 2>/dev/null)"
+  linky -u https://example5.com -o /tmp/example.com -gh ghp_xyz 
+  rm -rf /tmp/example.com 2>/dev/null
+  echo ""
+  echo "➼ Initialized Successfully"
+  exit 0
+fi
 #Help / Usage
 if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]] ; then
   echo "➼ Usage: linky -u <url> -o /path/to/outputdir -gh <github_token> -h <optional Headers>"
@@ -29,10 +28,10 @@ if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]]
   echo "-o,    --output_dir     Specify the directory to save the output files (Required)"
   echo "-gh,   --github_token   Specify a GitHub personal access token (Required if you want to fetch from github)"
   echo "-h,    --headers        Specify additional headers or cookies to use in the HTTP request (optional)"
-  #echo "-init, --init           Initialize ➼ linky by dry-running it against example.com (Only run on a fresh Install)"
+  echo "-init, --init           Initialize ➼ linky by dry-running it against example.com (Only run on a fresh Install)"
   echo "-up,   --update         Update linky"
   echo ""
-  echo "Example Usage: (#Manually Specify -gh | --github_token ghp_xyz , incase ~/.config/.github_tokens doesn't exsist)"
+  echo "Example Usage: "
   echo 'linky --url https://example.com --output_dir /path/to/outputdir --github_token ghp_xyz --headers "Authorization: Bearer token; Cookie: cookie_value"'
   echo ""
   exit 0
@@ -66,8 +65,8 @@ do
       exit 1
     fi
     url="$2"
-    shift # past argument
-    shift # past value
+    shift 
+    shift 
     ;;
     -o|--output_dir)
     if [ -z "$2" ]; then
@@ -75,8 +74,8 @@ do
       exit 1
     fi
     outputDir="$2"
-    shift # past argument
-    shift # past value
+    shift 
+    shift 
     if [ -d "$outputDir" ]; then
         find $outputDir -type f -size 0 -delete 
         if [ -z "$(ls -A $outputDir)" ]; then
@@ -98,8 +97,8 @@ do
       exit 1
     fi
     githubToken="$2"
-    shift # past argument
-    shift # past value
+    shift 
+    shift 
     ;;
     -h|--headers)
     if [ -z "$2" ]; then
@@ -109,8 +108,12 @@ do
       exit 1
     fi
     optionalHeaders="$2"
-    shift # past argument
-    shift # past value
+    shift 
+    shift 
+    ;;
+    -d|--deep) # treat --deep as a flag option
+     deep=1
+     shift
     ;;
     *)    # unknown option
     echo "Error: Invalid option '$key' , try --help for more information"
@@ -123,6 +126,7 @@ export url=$url
 export outputDir=$outputDir
 export githubToken=$githubToken
 export optionalHeaders=$optionalHeaders
+export deep=$deep
 #Recheck Values
 echo "url: $url"
 echo "outputDir: $outputDir"
@@ -156,73 +160,131 @@ for binary in "${binaries[@]}"; do
     fi
 done
 #Health Check for Tools
-paths=("$HOME/Tools/xnLinkFinder/xnLinkFinder.py" "$HOME/Tools/JSA/./automation.sh" "$HOME/Tools/github-endpoints.py")
+paths=("$HOME/Tools/xnLinkFinder/xnLinkFinder.py" "$HOME/Tools/JSA/./automation.sh" "$HOME/Tools/github-search/github-endpoints.py" "$HOME/Tools/waymore/waymore.py")
 for path in "${paths[@]}"; do
     if [ ! -f "$path" ]; then
         echo "➼ Error: $path not found"
-        echo "➼ Attempting to Install missing tools under $HOME/Tools"
-        #xnl-h4ck3r/xnLinkFinder 
-        git clone https://github.com/xnl-h4ck3r/xnLinkFinder $HOME/Tools/xnLinkFinder
-        cd $HOME/Tools/xnLinkFinder && sudo python setup.py install
+        echo "➼ Attempting to Install missing tools under $HOME/Tools $(mkdir -p $HOME/Tools)"        
         #gwen001/github-search
-        wget https://raw.githubusercontent.com/gwen001/github-search/master/github-endpoints.py -O $HOME/Tools/github-endpoints.py
+        cd $HOME/Tools && git clone https://github.com/gwen001/github-search && cd $HOME/Tools/github-search && pip3 install -r requirements.txt
         #w9w/JSA
-        git clone https://github.com/w9w/JSA.git && cd JSA && pip3 install -r requirements.txt
+        cd $HOME/Tools && git clone https://github.com/w9w/JSA.git && cd $HOME/Tools/JSA && pip3 install -r requirements.txt
         wget https://raw.githubusercontent.com/mux0x/needs/main/JSA_automation.sh -O $HOME/Tools/JSA/automation.sh
-        chmod +x $HOME/Tools/JSA/automation.sh && chmod +x $HOME/Tools/JSA/automation/./404_js_wayback.sh
+        chmod +x $HOME/Tools/JSA/automation.sh && chmod +x $HOME/Tools/JSA/automation/404_js_wayback.sh
+        #xnl-h4ck3r/Waymore
+        cd $HOME/Tools && git clone https://github.com/xnl-h4ck3r/waymore.git && cd $HOME/Tools/waymore  && pip3 install -r requirements.txt 
+        python3 $HOME/Tools/waymore/setup.py install
+        #xnl-h4ck3r/xnLinkFinder 
+        cd $HOME/Tools && git clone https://github.com/xnl-h4ck3r/xnLinkFinder.git && cd $HOME/Tools/xnLinkFinder
+        sudo python $HOME/Tools/xnLinkFinder/setup.py install        
     fi
 done
-#Start Tool
-function extract_domain_name() {
-    # Extract domain name up to the second level
-    domain=$(echo $url | awk -F/ '{print $3}' | awk -F. '{if (NF>2) {print $(NF-1)"."$NF} else {print $0}}')
-    # Return domain name
-    echo $domain
+#Extract domains from urls
+function extract_scope-domain_name()
+{
+  #Extract root domain name 
+   domain=$(echo $url | awk -F/ '{print $3}' | awk -F. '{if (NF>2) {print $(NF-1)"."$NF} else {print $0}}')
+   echo $scope-domain
 }
-domain=$(extract_domain_name $url)
+scope-domain=$(extract_scope-domain_name $url)
+function extract_domain_name() 
+{
+  #Extract full domain name
+   domain=$(echo $url | awk -F/ '{print $3}')
+   echo $domain
+}
+domain=$(extract_scope-domain_name $url)
+
+#Start Tools
+#Github-Endpoints
+echo "➼ Running github-endpoints on: $url" && sleep 3s
+rm -rf /tmp/$scope-domain-gh.txt 
+python3 $HOME/Tools/github-search/github-endpoints.py -t $githubToken -d $domain | anew /tmp/$scope-domain-gh.txt
+cat /tmp/$scope-domain-gh.txt | anew $outputDir/urls.txt
+
+#GoSpider
+echo "➼ Running GoSpider on: $url "
+if [ -n "$optionalHeaders" ]; then 
+  if [ -n "$deep" ]; then
+    gospider -s $url --other-source --include-subs --include-other-source --concurrent 50 --depth 5 -H "$optionalHeaders" --quiet | grep -aEo 'https?://[^ ]+' | sed 's/]$//' | anew $outputDir/urls.txt
+  else
+    gospider -s $url --other-source --include-subs --include-other-source --concurrent 20 -H "$optionalHeaders" --quiet | grep -aEo 'https?://[^ ]+' | sed 's/]$//' |  anew $outputDir/urls.txt
+  fi
+else
+  if [ -n "$deep" ]; then
+    gospider -s $url --other-source --include-subs --include-other-source --concurrent 50 --depth 5 --quiet | grep -aEo 'https?://[^ ]+' | sed 's/]$//' | anew $outputDir/urls.txt
+  else 
+    gospider -s $url --other-source --include-subs --include-other-source --concurrent 20 --quiet | grep -aEo 'https?://[^ ]+' | sed 's/]$//' | anew $outputDir/urls.txt
+  fi
+fi
+clear 
+
+#Hakrawler
+echo "➼ Running hakrawler on: $url" && sleep 3s
+if [ -n "$optionalHeaders" ]; then 
+   if [ -n "$deep" ]; then
+   echo $url | hakrawler -d 5 -insecure -t 20 -h "$optionalHeaders" | anew $outputDir/urls.txt
+  else
+   echo $url | hakrawler -insecure -t 20 -h "$optionalHeaders" | anew $outputDir/urls.txt
+  fi
+else
+   if [ -n "$deep" ]; then
+    echo $url | hakrawler -d 5 -insecure -t 20 | anew $outputDir/urls.txt
+  else 
+   echo $url | hakrawler -insecure -t 20 | anew $outputDir/urls.txt
+  fi
+fi 
+
+#Katana
+rm -rf /tmp/$scope-domain-katana.txt
+echo "➼ Running Katana on: $url" && sleep 3s
+if [ -n "$optionalHeaders" ]; then 
+   if [ -n "$deep" ]; then
+    echo $url | katana -d 5 -H "$optionalHeaders" -o /tmp/$scope-domain-katana.txt 
+  else 
+    echo $url | katana -H "$optionalHeaders" -o /tmp/$scope-domain-katana.txt
+  fi
+else
+   if [ -n "$deep" ]; then
+    echo $url | katana -d 5 -o /tmp/$scope-domain-katana.txt
+  else
+    echo $url | katana -o /tmp/$scope-domain-katana.txt
+  fi
+fi
+cat /tmp/$scope-domain-katana.txt | anew -q $outputDir/urls.txt && clear 
+
+#XnLinkFinder
+echo "➼ Running xnLinkFinder on: $url" && sleep 3s
+if [ -n "$optionalHeaders" ]; then 
+   if [ -n "$deep" ]; then
+    python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py -i $url -H "$optionalHeaders" -sp $url -d 5 -sf .*$scope-domain -v -insecure -o $outputDir/urls.txt -op $outputDir/parameters.txt
+  else
+    python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py -i $url -H "$optionalHeaders" -sp $url -sf .*$scope-domain -v -insecure -o $outputDir/urls.txt -op $outputDir/parameters.txt
+  fi
+else
+  if [ -n "$deep" ]; then
+    python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py -i $url -sp $url -d 5 -sf .*$scope-domain -v -insecure -o $outputDir/urls.txt -op $outputDir/parameters.txt
+  else
+    python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py -i $url -sp $url -sf .*$scope-domain -v -insecure -o $outputDir/urls.txt -op $outputDir/parameters.txt
+  fi
+fi
+clear 
+
+#Waymore
+
 echo "➼ Running Waybackurls on: $url"
 echo $url | waybackurls | anew $outputDir/urls.txt;
 echo "➼ Running gau on: $url" && sleep 3s
-echo $url | gau --threads 20 | anew $outputDir/urls.txt
-clear 
-rm -rf /tmp/$domain-katana.txt
-echo "➼ Running Katana on: $url" && sleep 3s
-if [ -n "$optionalHeaders" ]; then 
-    echo $url | katana -H "$optionalHeaders" -o /tmp/$domain-katana.txt
-else
-    echo $url | katana -o /tmp/$domain-katana.txt
-fi
-cat /tmp/$domain-katana.txt | anew -q $outputDir/urls.txt
-clear 
-echo "➼ Running hakrawler on: $url" && sleep 3s
-if [ -n "$optionalHeaders" ]; then 
-    echo $url | hakrawler -insecure -t 20 -h "$optionalHeaders" | anew $outputDir/urls.txt
-else
-    echo $url | hakrawler -insecure -t 20 | anew $outputDir/urls.txt
-fi 
-echo "➼ Running GoSpider silently on: $url & Saving Output" 
-echo "➼ Please be patient.." 
-if [ -n "$optionalHeaders" ]; then 
-    gospider -s $url -a -w -r -c 20 -H "$optionalHeaders" | grep -aEo 'https?://[^ ]+' | sed 's/]$//' | sort -u | anew $outputDir/urls.txt
-else
-    gospider -s $url -a -w -r -c 20 | grep -aEo 'https?://[^ ]+' | sed 's/]$//' | sort -u | anew $outputDir/urls.txt
-fi
-clear 
-echo "➼ Running xnLinkFinder on: $url" && sleep 3s
-if [ -n "$optionalHeaders" ]; then 
-    python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py  -i $url -H "$optionalHeaders" -sp $url -d 4 -sf .*$domain -v -insecure -o $outputDir/urls.txt -op $outputDir/parameters.txt
-else
-    python3 $HOME/Tools/xnLinkFinder/xnLinkFinder.py  -i $url -sp $url -d 4 -sf .*$domain -v -insecure -o $outputDir/urls.txt -op $outputDir/parameters.txt
-fi
-clear 
-echo "➼ Running github-endpoints on: $url" && sleep 3s
-rm -rf /tmp/$domain-gh.txt 
-python3 $HOME/Tools/github-endpoints.py -t $githubToken -d $domain | anew /tmp/$domain-gh.txt
-cat /tmp/$domain-gh.txt | anew $outputDir/urls.txt
+echo $url | gau --threads 20 | anew $outputDir/urls.txt && clear
+
+#GetJs Links
 cat $outputDir/urls.txt | grep -aEi "\.js([?#].*)?$" | anew $outputDir/js.txt
+#JSA
 echo $url | $HOME/Tools/JSA/./automation.sh $outputDir $githubToken $outputDir/urls.txt 1> $outputDir/JSA.log 2>&1
 cat $outputDir/urls.txt| sed '$!N; /^\(.*\)\n\1$/!P; D'| grep -P '\.php|\.asp|\.js|\.jsp|\.jsp' | anew $outputDir/endpoints.txt
 cat $outputDir/urls.txt| grep -Po '(?:\?|\&)(?<key>[\w]+)(?:\=|\&?)(?<value>[\w+,.-]*)' | tr -d '?' | tr -d '&' | sed 's/=.*//' | sort -u | uniq | anew $outputDir/parameters.txt
+
+#QOL Changes
 cd $originalDir
 echo "➼ All Links Scraped and Saved in: $outputDir"
 files=( "$outputDir/js.txt" "$outputDir/parameters.txt" "$outputDir/urls.txt" "$outputDir/endpoints.txt" )
@@ -235,6 +297,7 @@ for i in "${!files[@]}"; do
         echo "➼ File ${files[i]} not found"
     fi
 done
+
 #Check For Update on Script end
 echo ""
 REMOTE_FILE=$(mktemp)
