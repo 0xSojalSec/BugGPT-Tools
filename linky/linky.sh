@@ -38,7 +38,7 @@ if [[ "$*" == *"-help"* ]] || [[ "$*" == *"--help"* ]] || [[ "$*" == *"help"* ]]
   echo ""
   echo "Tips: "
   echo "➼ Include API keys in $HOME/Tools/waymore/config.yml to find more links"
-  echo ""
+  echo "➼ Include multiple github_tokens in $HOME/.config/.github_tokens to avoid rate limits"
   exit 0
 fi
 # Update. Github caches take several minutes to reflect globally  
