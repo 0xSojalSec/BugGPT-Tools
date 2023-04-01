@@ -385,7 +385,7 @@ sed -i '/^https\?:\/\//d' $outputDir/endpoints.txt
 cat $outputDir/urls.txt | grep -Po '(?:\?|\&)(?<key>[\w]+)(?:\=|\&?)(?<value>[\w+,.-]*)' | tr -d '?' | tr -d '&' | sed 's/=.*//' | sort -u | uniq | anew -q $outputDir/parameters.txt
 
 #QOL Changes
-find $outputDir -type f -size 0 -delete && find $outputDir -type d -size 0 -delete
+find $outputDir -type f -size 0 -delete && find $outputDir -type d -empty -delete
 find $outputDir -type f -name "*.txt" -not -name ".*" -exec sort -u {} -o {} \;  
 echo ""
 cd $originalDir
