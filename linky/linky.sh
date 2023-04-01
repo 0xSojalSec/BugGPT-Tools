@@ -295,7 +295,7 @@ cat /tmp/$scope_domain-katana.txt | anew -q $outputDir/tmp/urls.txt && clear
 
 #Robots.txt
 echo "➼ Finding all robots.txt Endpoints on: $url" 
-roboxtractor -u $url -s -m 1 -v | sort -u | awk '{print "/" $1}' | anew $outputDir/robots.txt
+roboxtractor -u $url -s -m 1 -wb -v | sort -u | awk '{print "/" $1}' | anew $outputDir/robots.txt
 
 #XnLinkFinder
 echo "➼ Running xnLinkFinder on: $url" && sleep 3s
