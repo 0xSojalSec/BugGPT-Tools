@@ -24,18 +24,21 @@ linky -init
 ➼ Usage: linky -u <url> -o /path/to/outputdir -gh <github_token> -h <optional Headers>
 
 Extended Help
--u,    --url            Specify the URL to scrape (Required)
--o,    --output_dir     Specify the directory to save the output files (Required)
--gh,   --github_token   Specify a GitHub personal access token (Required if you want to fetch from github)
--d,    --deep           Specify if Gospider, Hakrawler, Katana & XnLinkfinder should run with depth 5. (Super Slow)
--h,    --headers        Specify additional headers or cookies to use in the HTTP request (optional)
--init, --init           Initialize ➼ linky by dry-running it against example5.com (Only run on a fresh Install)
--up,   --update         Update linky
--cls,  --clean          Cleans /tmp/ files after run
+-u,     --url            Specify the URL to scrape (Required)
+-o,     --output_dir     Specify the directory to save the output files (Required)
+-gh,    --github_token   Specify manually: ghp_xxx (Not Required if $HOME/.config/.github_tokens exists)
+-d,     --deep           Specify if Gospider, Hakrawler, Katana & XnLinkfinder should run with depth 5. (Slow)
+-h,     --headers        Specify additional headers or cookies to use in the HTTP request (optional)
+-init,  --init           Initializes ➼ linky by dry-running it against example5.com (Only run on a fresh Install)
+-up,    --update         Updates linky
+-ctmp,  --clean-tmp      Cleans /tmp/ files after run
+-curls, --clean-urls     Removes noisy junk urls (godeclutter | urless)
+
 
 Example Usage: 
 linky --url https://example.com --output_dir /path/to/outputdir --github_token ghp_xyz --headers "Authorization: Bearer token; Cookie: cookie_value"
 
 Tips: 
 ➼ Include API keys in $HOME/Tools/waymore/config.yml to find more links
+➼ Include multiple github_tokens in $HOME/.config/.github_tokens to avoid rate limits
 ```
