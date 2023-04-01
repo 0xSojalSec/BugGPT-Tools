@@ -189,30 +189,59 @@ if ! command -v pipx &> /dev/null; then
    python3 -m pip install pipx
    python3 -m pipx ensurepath
 fi
-#Health Check for binaries
+
+# Health Check for binaries
 binaries=("anew" "arjun" "fasttld" "fget" "gau" "godeclutter" "gospider" "hakrawler" "js-beautify" "katana" "roboxtractor" "scopegen" "scopeview" "subjs" "unfurl" "waybackurls")
 for binary in "${binaries[@]}"; do
     if ! command -v "$binary" &> /dev/null; then
         echo "➼ Error: $binary not found"
         echo "➼ Attempting to Install missing tools"
-        go install -v github.com/tomnomnom/anew@latest
-        pipx install -f "git+https://github.com/s0md3v/Arjun.git" --include-deps
-        go install -v github.com/lc/gau/v2/cmd/gau@latest
-        sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/assets/fasttld -O /usr/local/bin/fasttld && sudo chmod +xwr /usr/local/bin/fasttld
-        GO111MODULE=on && go get -u -v github.com/bp0lr/fget
-        go install -v github.com/c3l3si4n/godeclutter@main
-        go install -v github.com/jaeles-project/gospider@latest
-        go install -v github.com/hakluke/hakrawler@latest
-        sudo npm -g install js-beautify
-        go install -v github.com/projectdiscovery/katana/cmd/katana@latest
-        go env -w GO111MODULE="auto" ; go get -u github.com/Josue87/roboxtractor
-        go install -v github.com/Azathothas/BugGPT-Tools/scopegen@main
-        sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/scopeview/scopeview.sh -O /usr/local/bin/scopeview && sudo chmod +xwr /usr/local/bin/scopeview
-        go install -v github.com/lc/subjs@latest
-        go install -v github.com/tomnomnom/unfurl@latest
-        go install -v github.com/tomnomnom/waybackurls@latest
+        case "$binary" in
+            "anew") go install -v github.com/tomnomnom/anew@latest ;;
+            "arjun") pipx install -f "git+https://github.com/s0md3v/Arjun.git" --include-deps ;;
+            "fasttld") sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/assets/fasttld -O /usr/local/bin/fasttld && sudo chmod +xwr /usr/local/bin/fasttld ;;
+            "fget") GO111MODULE=on && go get -u -v github.com/bp0lr/fget ;;
+            "gau") go install -v github.com/lc/gau/v2/cmd/gau@latest ;;
+            "godeclutter") go install -v github.com/c3l3si4n/godeclutter@main ;;
+            "gospider") go install -v github.com/jaeles-project/gospider@latest ;;
+            "hakrawler") go install -v github.com/hakluke/hakrawler@latest ;;
+            "js-beautify") sudo npm -g install js-beautify ;;
+            "katana") go install -v github.com/projectdiscovery/katana/cmd/katana@latest ;;
+            "roboxtractor") go env -w GO111MODULE="auto" ; go get -u github.com/Josue87/roboxtractor ;;
+            "scopegen") go install -v github.com/Azathothas/BugGPT-Tools/scopegen@main ;;
+            "scopeview") sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/scopeview/scopeview.sh -O /usr/local/bin/scopeview && sudo chmod +xwr /usr/local/bin/scopeview ;;
+            "subjs") go install -v github.com/lc/subjs@latest ;;
+            "unfurl") go install -v github.com/tomnomnom/unfurl@latest ;;
+            "waybackurls") go install -v github.com/tomnomnom/waybackurls@latest ;;
+        esac
+        break
     fi
 done
+
+##Health Check for binaries
+#binaries=("anew" "arjun" "fasttld" "fget" "gau" "godeclutter" "gospider" "hakrawler" "js-beautify" "katana" "roboxtractor" "scopegen" "scopeview" "subjs" "unfurl" "waybackurls")
+#for binary in "${binaries[@]}"; do
+#    if ! command -v "$binary" &> /dev/null; then
+#        echo "➼ Error: $binary not found"
+#        echo "➼ Attempting to Install missing tools"
+#        go install -v github.com/tomnomnom/anew@latest
+#        pipx install -f "git+https://github.com/s0md3v/Arjun.git" --include-deps
+#        go install -v github.com/lc/gau/v2/cmd/gau@latest
+#        sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/linky/assets/fasttld -O /usr/local/bin/fasttld && sudo chmod +xwr /usr/local/bin/fasttld
+#        GO111MODULE=on && go get -u -v github.com/bp0lr/fget
+#        go install -v github.com/c3l3si4n/godeclutter@main
+#        go install -v github.com/jaeles-project/gospider@latest
+#        go install -v github.com/hakluke/hakrawler@latest
+#        sudo npm -g install js-beautify
+#        go install -v github.com/projectdiscovery/katana/cmd/katana@latest
+#        go env -w GO111MODULE="auto" ; go get -u github.com/Josue87/roboxtractor
+#        go install -v github.com/Azathothas/BugGPT-Tools/scopegen@main
+#        sudo wget https://raw.githubusercontent.com/Azathothas/BugGPT-Tools/main/scopeview/scopeview.sh -O /usr/local/bin/scopeview && sudo chmod +xwr /usr/local/bin/scopeview
+#        go install -v github.com/lc/subjs@latest
+#        go install -v github.com/tomnomnom/unfurl@latest
+#        go install -v github.com/tomnomnom/waybackurls@latest
+#    fi
+#done
 #Health Check for Tools
 paths=("$HOME/Tools/JSA/automation.sh" "$HOME/Tools/Arjun/arjun/db/large.txt" "$HOME/Tools/github-search/github-endpoints.py" "$HOME/Tools/urless" "$HOME/Tools/waymore/waymore.py" "$HOME/Tools/xnLinkFinder/xnLinkFinder.py")
 for path in "${paths[@]}"; do
@@ -385,7 +414,7 @@ cat $outputDir/urls.txt | grep -Po '(?:\?|\&)(?<key>[\w]+)(?:\=|\&?)(?<value>[\w
 
 #QOL Changes
 find $outputDir -type f -size 0 -delete
-find $outputDir -type f -not -name ".*" -exec sort -u {} -o {} \;  
+find $outputDir -type f -name "*.txt" -not -name ".*" -exec sort -u {} -o {} \;  
 cd $originalDir
 echo "➼ All Links Scraped and Saved in: $outputDir"
 files=("$outputDir/endpoints.txt" "$outputDir/js.txt" "$outputDir/jsfile-links.txt" "$outputDir/jsfiles-params.txt" "$outputDir/parameters.txt" "$outputDir/robots.txt" "$outputDir/urls.txt" )
