@@ -256,7 +256,7 @@ cat $outputDir/tmp/gau-urls.txt | anew -q $outputDir/tmp/urls.txt && clear
 
 #Github-Endpoints
 echo "➼ Running github-endpoints on: $url" && sleep 3s
-python3 $HOME/Tools/github-search/github-endpoints.py -t $githubToken -d $domain | anew $outputDir/tmp/git-urls.txt
+python3 $HOME/Tools/github-search/github-endpoints.py -t $githubToken -d $domain --extend | anew $outputDir/tmp/git-urls.txt
 cat $outputDir/tmp/git-urls.txt | anew $outputDir/tmp/urls.txt
 
 #GoSpider
@@ -375,18 +375,17 @@ cp /tmp/$domain-jsfile-links.txt $outputDir/jsfile-links.txt && cp /tmp/$domain-
 cat $outputDir/jsfile-links.txt | cut -d'[' -f1 | anew $outputDir/endpoints.txt
 cat $outputDir/jsfile-links.txt | grep -aEo 'https?://[^ ]+' | sed 's/]$//' | anew $outputDir/tmp/urls.txt
 cat $outputDir/jsfiles-params.txt | anew $outputDir/parameters.txt 
-echo "=========================================="
 
 #Endpoints
-cat $outputDir/urls.txt | sed '$!N; /^\(.*\)\n\1$/!P; D'| grep -P '\.php|\.asp|\.js|\.jsp|\.jsp' | anew $outputDir/endpoints.txt
+cat $outputDir/urls.txt | sed '$!N; /^\(.*\)\n\1$/!P; D'| grep -P '\.php|\.asp|\.js|\.jsp|\.jsp' | anew -q $outputDir/endpoints.txt
 sed -i 's#^/##' $outputDir/endpoints.txt
 sed -i '/^https\?:\/\//d' $outputDir/endpoints.txt
 
 #Parameters
-cat $outputDir/urls.txt | grep -Po '(?:\?|\&)(?<key>[\w]+)(?:\=|\&?)(?<value>[\w+,.-]*)' | tr -d '?' | tr -d '&' | sed 's/=.*//' | sort -u | uniq | anew $outputDir/parameters.txt
+cat $outputDir/urls.txt | grep -Po '(?:\?|\&)(?<key>[\w]+)(?:\=|\&?)(?<value>[\w+,.-]*)' | tr -d '?' | tr -d '&' | sed 's/=.*//' | sort -u | uniq | anew -q $outputDir/parameters.txt
 
 #QOL Changes
-find $outputDir -type f -size 0 -delete
+find $outputDir -type f -size 0 -delete && find $outputDir -type d -size 0 -delete
 find $outputDir -type f -name "*.txt" -not -name ".*" -exec sort -u {} -o {} \;  
 echo ""
 cd $originalDir
